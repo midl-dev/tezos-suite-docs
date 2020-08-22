@@ -31,7 +31,11 @@ To follow the instructions below, you will need to install the Tezos Command Lin
 
 The simplest way is to install the Docker containers then run the client in [privileged mode with USB volume mounted](https://tezos.stackexchange.com/questions/395/has-anyone-got-ledger-working-within-docker).
 
-Then issue the command `tezos-client list connected ledgers`.
+Note that it is not needed to synchronize the blockchain.
+
+Then issue the command `./mainnet.sh client list connected ledgers`.
+
+When running natively instead of docker, use the `tezos-client` command instead of `./mainnet.sh client`.
 
 The Ledger URL including the four-animal-word mnemonic will be displayed, together with commands inviting you to import the key.
 
@@ -48,16 +52,20 @@ It is considered good practice to always use a derived path instead of the root 
 Import the key into your client:
 
 ```
-tezos-client import secret key ledger_tezos "ledger://<mnemonic>/ed25519/0'/1'"
+./mainnet.sh client import secret key ledger_tezos "ledger://<mnemonic>/ed25519/0'/1'"
 ```
 
 Then read the public key hash associated with this Leger key and path:
 
 ```
-tezos-client list known addresses
+./mainnet.sh client list known addresses
 ```
 
-Write down the Ledger URL and the public key hash as they are necessary to spin up the cloud baker.
+Write down the Ledger URL and the baker's public key hash as they are necessary to spin up the cloud baker.
+
+### Transfer funds
+
+Transfer enough funds (at least one roll of XTZ) to the baker's public key hash.
 
 ### Register as delegate
 
@@ -70,7 +78,7 @@ You need either a fully synced local Tezos node, or to connect to a public node.
 Issue the following operation:
 
 ```
-tezos-client register key legder_tezos as delegate
+./mainnet.sh client register key legder_tezos as delegate
 ```
 
 [See Tezos official documentation for more details](https://tezos.gitlab.io/introduction/howtorun.html#register-and-check-your-rights)
