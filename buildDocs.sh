@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+set -e
 ################################################################################
 # File:    buildDocs.sh
 # Purpose: Script that builds our documentation using sphinx and updates GitHub
