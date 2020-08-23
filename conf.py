@@ -55,6 +55,8 @@ html_css_files = [
 
 extensions = ['recommonmark', 'sphinx_rtd_theme']
 
+html_logo = 'midl-dev-notext.png'
+
 master_doc = 'index'
 
 # app setup hook
