@@ -15,7 +15,11 @@ All code is released under the terms of the Apache License.
 
 This project is supported by the Tezos Foundation.
 
-### Table of contents
+Contents
+--------
 
-[Initial baker setup](setup_baker).
+* [Quickstart](quickstart)
+* [Initial baker setup](setup_baker)
+* [Production readiness](production-readiness)
+* [Deploy remote signer](deploy-remote-signer)
 
