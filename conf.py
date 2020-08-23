@@ -58,3 +58,4 @@ html_css_files = [
 
 extensions = ['recommonmark', 'sphinx_rtd_theme']
 
+master_doc = 'index'
