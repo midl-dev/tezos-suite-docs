@@ -19,10 +19,10 @@ Contents
 --------
 
 * [Architecture](architecture)
-* Install
- * [Initial baker setup](setup_baker)
- * [Production readiness](production-readiness)
- * [Deploy remote signer](deploy-remote-signer)
+* [Initial baker setup](setup_baker)
+* [Deploy remote signer](deploy-remote-signer)
+* [Deploy auxiliary cluster](deploy-auxiliary-cluster)
+* [Production readiness](production-readiness)
 
 Quick start
 -----------
