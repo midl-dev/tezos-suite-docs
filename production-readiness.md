@@ -19,20 +19,73 @@ You may then grant people in your organization access to the project. It is reco
 
 ## Separate cluster definition from baker definition
 
-For maintainability purposes, do not create a baker straight from tezos-on-gke `terraform` folder.
+While you can create a baker in one-shot, it is best suited for demos and testnets. A production baker is best advised to be defined declaratively.
 
-Instead, it is recommended to create a maintain a private terraform file, declaring a cluster, and every deployment that lives within.
+You would normally write all the parameters defining your baker in a `terraform.tfvars` file in your laptop.
 
-The `tezos-on-gke` project supports this. The `terraform-no-cluster-create` folder will deploy the baker on a pre-existing cluster.
+Instead, it is recommended to create a maintain a private terraform manifest, declaring a cluster, and every deployment that lives within. This way, the paramters defining your cluster can also be committed to git (except secrets which should be handled separately, more on this below).
 
 This keeps the setup maintainable by letting you define several deployments within the same cluster. For example, you may deploy the Tezos baker setup, and the Tezos monitoring setup, within the same cluster.
 
+### Define the cluster
+
+The [terraform-gke-blockchain](https://github.com/midl-dev/terraform-gke-blockchain) repository contains boilerplate terraform code to deploy a kubernetes cluster.
+
+Start by declaring one:
+
 ```
-module "terraform-gke-blockchain" "my-cluster" {
-...
+module "terraform-gke-blockchain" {
+  source = "github.com/midl-dev/terraform-gke-blockchain?ref=v1.0"
+  org_id = "<my org id, defined above>"
+  billing_account = "<my billing account, defined above>"
+  node_pools = { "baking_pool" : { "node_count": 1, "instance_type": "e2-standard-2" },
+    "monitoring_pool" : { "node_count": 1, "instance_type": "e2-standard-1" } }
+  terraform_service_account_credentials="~/.config/gcloud/terraform-service-account-credentials.json"
+  project_prefix = "midlmaster"
+  monitoring_slack_url = var.monitoring_slack_url
 }
 
-module 
+```
+
+Notice that we created two node pools. These are distinct virtual machines that run your kubernetes cluster. You can map your pods to either. We will be using these to separate the baker setup from the payout/monitoring setup.
+
+### Define the tezos baker
+
+Within the `tezos-on-gke` repository, the `terraform-no-cluster-create` folder will deploy the baker on a pre-existing cluster.
+
+The output parameters of the `terraform-gke-blockchain` module become the input parameters of the Tezos baker module.
+
+All variables will appear in the terraform manifest itself, except secrets. Secrets should be kept as variables, and handled appropriately.
+
+It looks like:
+
+```
+module "tezos-baker" {
+  source = "github.com/midl-dev/tezos-on-gke?ref=v1.0//terraform-no-cluster-create"
+  region = module.terraform-gke-blockchain.location
+  node_locations = module.terraform-gke-blockchain.node_locations
+  kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
+  cluster_ca_certificate = module.terraform-gke-blockchain.cluster_ca_certificate
+  cluster_name = module.terraform-gke-blockchain.name
+  kubernetes_access_token = data.google_client_config.current.access_token
+  kubernetes_pool_name = "baking_pool"
+  project = module.terraform-gke-blockchain.project
+  full_snapshot_url = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.full"
+  rolling_snapshot_url = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.rolling"
+  kubernetes_namespace = "tezos"
+  kubernetes_name_prefix = "xtz"
+  tezos_private_version="v7.3"
+  tezos_sentry_version="v7.3"
+  baking_nodes = {
+    "mybaker" : {
+      "mynode" : {
+        "public_baking_key": "tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU",
+        "insecure_private_baking_key": "edsk3cftTNcJnxb7ehCxYeCaKPT7mjycdMxgFisLixrQ9bZuTG2yZK"
+      }
+    }
+  }
+  tezos_network="mainnet"
+}
 ```
 
 ## Terraform remote state
@@ -58,7 +111,7 @@ More info in the [Terraform documentation](https://www.terraform.io/docs/backend
 
 ## Full example
 
-A terraform manifest to deploy a Tezos baker.
+A terraform manifest to deploy a Tezos baker in one namespace
 
 ## Going further
 

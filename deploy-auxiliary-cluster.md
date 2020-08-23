@@ -10,12 +10,4 @@ This auxiliary cluster also runs payout operations. Since baking and endorsing i
 
 ## Codebase
 
-[https://github.com/midl-dev/tezos-auxiliary-cluster]
-
-## Deploy
-
-The cluster can also be deployed in one go from the repository itself.
-
-The production-readiness guidelines still apply.
-
-It is recommended to set up a private repository to declaratively configure the cluster.
+https://github.com/midl-dev/tezos-auxiliary-cluster
