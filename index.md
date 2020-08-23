@@ -18,8 +18,12 @@ This project is supported by the Tezos Foundation.
 Contents
 --------
 
-* [Quickstart](quickstart)
+* [Architecture](architecture)
 * [Initial baker setup](setup_baker)
 * [Production readiness](production-readiness)
 * [Deploy remote signer](deploy-remote-signer)
 
+Quick start
+-----------
+
+To quickly spin up a baking node on the Tezos testnet, follow instructions from the [Tezos-on-GKE README](https://github.com/midl-dev/tezos-on-gke/)
