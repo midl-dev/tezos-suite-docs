@@ -21,6 +21,6 @@ Then, apply the changes. Your baker will restart with the right baking and endor
 
 ### Remotely ssh into the remote signers
 
-For remote connectivity and debugging purposes, ssh port 22 for the on-prem remote signers is being forwarded on ports 
+For remote connectivity and debugging purposes, ssh port 22 for the on-prem remote signers is being forwarded on port [signer port + 1000].
 
-To connect to the signers, forward port 9443/9444 from the `tezos-remote-signer-forwarder` locally, then ssh to localhost using your private key associated with the public key injected into the baker during initial setup.
+To connect to the signers, forward port [signer port + 1000] from the `tezos-remote-signer-forwarder` locally, then ssh to localhost using your private key associated with the public key injected into the baker during initial setup.

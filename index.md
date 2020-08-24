@@ -8,8 +8,9 @@ MIDL.dev Tezos Suite is a complete solution for Tezos baking using industry best
 This documentation covers the following open-source projects:
 
 * [Tezos-on-GKE](https://github.com/midl-dev/tezos-on-gke/) : deploys a secure baker setup in Google Kubernetes Engine in just one command
-* [Tezos-Auxiliary-Cluster](https://github.com/midl-dev/tezos-auxiliary-cluster) : operating system for a secure, highly available Tezos remote signer setup on a Raspberry Pi connected to a Ledger device
-* [Tezos-remote-signer-OS](https://github.com/midl-dev/tezos-remote-signer-os/tree/master/tezos-remote-signer) : a toolkit for public bakers: monitors baking operations, issues payouts, and generates a dynamic baking website.
+* [Tezos-Auxiliary-Cluster](https://github.com/midl-dev/tezos-auxiliary-cluster) : a toolkit for public bakers: monitors baking operations, issues payouts, and generates a dynamic baking website.
+* [Tezos-remote-signer-OS](https://github.com/midl-dev/tezos-remote-signer-os/tree/master/tezos-remote-signer) : operating system for a secure, highly available Tezos remote signer setup on a Raspberry Pi connected to a Ledger device
+
 
 All code is released under the terms of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
 
