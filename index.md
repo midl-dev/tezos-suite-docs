@@ -23,6 +23,7 @@ Contents
 * [Deploy remote signer](deploy-remote-signer)
 * [Deploy auxiliary cluster](deploy-auxiliary-cluster)
 * [Production readiness](production-readiness)
+* [Day 2 operations](day-2-operations)
 
 Quick start
 -----------

@@ -31,18 +31,18 @@ This keeps the setup maintainable by letting you define several deployments with
 
 The [terraform-gke-blockchain](https://github.com/midl-dev/terraform-gke-blockchain) repository contains boilerplate terraform code to deploy a kubernetes cluster.
 
-Start by declaring one:
+Start by declaring one empty cluster:
 
 ```
 module "terraform-gke-blockchain" {
-  source = "github.com/midl-dev/terraform-gke-blockchain?ref=v1.0"
-  org_id = "<my org id, defined above>"
-  billing_account = "<my billing account, defined above>"
+  source                                = "github.com/midl-dev/terraform-gke-blockchain?ref=v1.0"
+  org_id                                = "<my org id, defined above>"
+  billing_account                       = "<my billing account, defined above>"
+  project_prefix                        = "mybakingop"
+  monitoring_slack_url                  = var.monitoring_slack_url
+  terraform_service_account_credentials = "~/.config/gcloud/terraform-service-account-credentials.json"
   node_pools = { "baking_pool" : { "node_count": 1, "instance_type": "e2-standard-2" },
     "monitoring_pool" : { "node_count": 1, "instance_type": "e2-standard-1" } }
-  terraform_service_account_credentials="~/.config/gcloud/terraform-service-account-credentials.json"
-  project_prefix = "midlmaster"
-  monitoring_slack_url = var.monitoring_slack_url
 }
 
 ```
@@ -61,21 +61,22 @@ It looks like:
 
 ```
 module "tezos-baker" {
-  source = "github.com/midl-dev/tezos-on-gke?ref=v1.0//terraform-no-cluster-create"
-  region = module.terraform-gke-blockchain.location
-  node_locations = module.terraform-gke-blockchain.node_locations
+  source                          = "github.com/midl-dev/tezos-on-gke?ref=v1.1//terraform-no-cluster-create"
+  region                          = module.terraform-gke-blockchain.location
+  node_locations                  = module.terraform-gke-blockchain.node_locations
   kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
-  cluster_ca_certificate = module.terraform-gke-blockchain.cluster_ca_certificate
-  cluster_name = module.terraform-gke-blockchain.name
-  kubernetes_access_token = data.google_client_config.current.access_token
-  kubernetes_pool_name = "baking_pool"
-  project = module.terraform-gke-blockchain.project
-  full_snapshot_url = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.full"
-  rolling_snapshot_url = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.rolling"
-  kubernetes_namespace = "tezos"
-  kubernetes_name_prefix = "xtz"
-  tezos_private_version="v7.3"
-  tezos_sentry_version="v7.3"
+  cluster_ca_certificate          = module.terraform-gke-blockchain.cluster_ca_certificate
+  cluster_name                    = module.terraform-gke-blockchain.name
+  kubernetes_access_token         = data.google_client_config.current.access_token
+  kubernetes_pool_name            = "baking_pool"
+  project                         = module.terraform-gke-blockchain.project
+  full_snapshot_url               = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.full"
+  rolling_snapshot_url            = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.rolling"
+  kubernetes_namespace            = "tezos"
+  kubernetes_name_prefix          = "xtz"
+  tezos_private_version           = "v7.3"
+  tezos_sentry_version            = "v7.3"
+  tezos_network                   = "mainnet"
   baking_nodes = {
     "mybaker" : {
       "mynode" : {
@@ -84,7 +85,6 @@ module "tezos-baker" {
       }
     }
   }
-  tezos_network="mainnet"
 }
 ```
 
@@ -109,19 +109,113 @@ The state will now be stored remotely.
 
 More info in the [Terraform documentation](https://www.terraform.io/docs/backends/types/gcs.html).
 
-## Full example
+## Putting it all together
 
-A terraform manifest to deploy a Tezos baker in one namespace
+This terraform manifest deploys a full Tezos baker.
+
+It creates a cluster with two node pools: one for the baker and one for the remaining containers.
+
+It deploys a baker and an auxiliary cluster handling the payouts, external monitoring and website.
+
+```
+terraform {
+  backend "gcs" {
+    bucket  = "terraform-state-midl-prod"
+    prefix  = "terraform/state"
+  }
+}
+
+variable "hot_wallet_private_key" {
+  description = "secret key for the baker payout account"
+  type = "string"
+}
+
+variable "website_builder_private_key" {
+  description = "secret key for the google storage bucket where the baking website is located"
+  type = "string"
+}
+
+variable "insecure_private_baking_key" {
+  description = "secret key for the baker. warning: for a mainnet baker, use a hardware wallet instead"
+  type = "string"
+}
+
+module "terraform-gke-blockchain" {
+  source                                = "github.com/midl-dev/terraform-gke-blockchain?ref=v1.0"
+  org_id                                = "<my org id, defined above>"
+  billing_account                       = "<my billing account, defined above>"
+  project_prefix                        = "mybakingop"
+  monitoring_slack_url                  = var.monitoring_slack_url
+  terraform_service_account_credentials = "~/.config/gcloud/terraform-service-account-credentials.json"
+  node_pools = { "baking_pool" : { "node_count": 1, "instance_type": "e2-standard-2" },
+    "monitoring_pool" : { "node_count": 1, "instance_type": "e2-standard-1" } }
+}
+
+module "tezos-baker" {
+  source                          = "github.com/midl-dev/tezos-on-gke?ref=v1.1//terraform-no-cluster-create"
+  region                          = module.terraform-gke-blockchain.location
+  node_locations                  = module.terraform-gke-blockchain.node_locations
+  kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
+  cluster_ca_certificate          = module.terraform-gke-blockchain.cluster_ca_certificate
+  cluster_name                    = module.terraform-gke-blockchain.name
+  kubernetes_access_token         = data.google_client_config.current.access_token
+  project                         = module.terraform-gke-blockchain.project
+  kubernetes_pool_name            = "baking_pool"
+  kubernetes_namespace            = "tezos"
+  kubernetes_name_prefix          = "xtz"
+  full_snapshot_url               = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.full"
+  rolling_snapshot_url            = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.rolling"
+  tezos_private_version           = "v7.3"
+  tezos_sentry_version            = "v7.3"
+  tezos_network                   = "mainnet"
+  baking_nodes = {
+    "mybaker" : {
+      "mynode" : {
+        "public_baking_key": "tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU",
+        "insecure_private_baking_key": var.insecure_private_baking_key
+      }
+    }
+  }
+}
+
+module "tezos-mainnet-monitoring" {
+  source                          = "github.com/midl-dev/tezos-auxiliary-cluster?ref=v1.1//terraform-no-cluster-create"
+  region                          = module.terraform-gke-blockchain.location
+  node_locations                  = module.terraform-gke-blockchain.node_locations
+  kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
+  cluster_ca_certificate          = module.terraform-gke-blockchain.cluster_ca_certificate
+  cluster_name                    = module.terraform-gke-blockchain.name
+  kubernetes_access_token         = data.google_client_config.current.access_token
+  project                         = module.terraform-gke-blockchain.project
+  kubernetes_pool_name            = "monitoring_pool"
+  kubernetes_namespace            = "tezos"
+  kubernetes_name_prefix          = "xtz"
+  tezos_private_version           = "v7.3"
+  tezos_sentry_version            = "v7.3"
+  website                         = "my_baking_website"
+  website_bucket_url              = "<my bucket url>"
+  website_archive                 = "<my_website_archive_url>"
+  public_baking_key               = "<public baking key goes here>"
+  hot_wallet_public_key           = "<payout key goes here>"
+  witness_payout_address          = "<payout witness address goes here>"
+  hot_wallet_private_key          = var.hot_wallet_private_key
+  website_builder_private_key     = var.website_builder_private_key
+  payout_fee                      = "5 % 100"
+  payout_starting_cycle           = "203"
+  payout_delay                    = "0"
+}
+```
+
+Note that all values above are not secrets, it is fine to commit them in a private repository. The secrets are passed with variables and must be handled separately.
 
 ## Going further
-
-The repository is optimized for quick spinup with one operator: secrets are stored locally in a `terraform.tfvars` file.
 
 A production validator should be operated with an on-call rotation, meaning several operators have access to the setup.
 
 Specifically:
 
 * secrets should be moved from a file in the operator workspace to a production secret store such as [Hashicorp Vault](vaultproject.io)
-* terraform state should be stored centrally (in a google storage bucket)
 * terraform deploys should be done by a CI system
-* any manual change in the kubernetes environment should be recorded in an audit log and committed in the code (see [Gitops](https://www.weave.works/technologies/gitops/)).
+* any manual change in the kubernetes environment should be recorded in an audit log and committed in the code:
+  * the terraform private file above can be applied with continuous integration
+  * the intermediate kubernetes code generated with kustomize could be stored in a CI pipeline and deployed in an auditable way as well (see [Gitops](https://www.weave.works/technologies/gitops/)).
