@@ -19,7 +19,8 @@ All code is released under the terms of the [Apache License](https://www.apache.
 Contents
 --------
 
-* [Architecture](architecture)
+* [Cloud Architecture](cloud-architecture)
+* [Remote Signer Architecture](remote-signer-architecture)
 * [Initial baker setup](setup_baker)
 * [Deploy remote signer](deploy-remote-signer)
 * [Deploy auxiliary cluster](deploy-auxiliary-cluster)

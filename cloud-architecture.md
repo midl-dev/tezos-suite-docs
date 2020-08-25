@@ -1,4 +1,4 @@
-# Architecture
+# Cloud Architecture
 
 The best known baking tool, Kiln, is a complete solution for home baking, to be installed on physical hardware. MIDL.dev, in contrast, outsources most of the computing to the cloud, increasing reliability and decreasing the operating burden of the baking operations.
 
