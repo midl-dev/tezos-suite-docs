@@ -9,9 +9,9 @@ terraform taint null_resource.push_containers && terraform taint null_resource.a
 terraform apply plan.out
 ```
 
-This will rebuild the containers locally, then do a `kubectl apply` to push the most recent changes to your cluster.
+This will rebuild the containers, then do a `kubectl apply` to push the most recent changes to your cluster.
 
-The daemons will restart after some time. However, you may kill the pods to restart them immediately.
+The pods will restart after some time. However, you may kill the pods to restart them immediately.
 
 ### Tezos Protocol update
 
