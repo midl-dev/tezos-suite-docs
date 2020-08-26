@@ -63,9 +63,23 @@ Then read the public key hash associated with this Leger key and path:
 
 Write down the Ledger URL and the baker's public key hash as they are necessary to spin up the cloud baker.
 
+### Test incoming and outgoing transfers
+
+First, it is recommended to send a small amount of XTZ in the Ledger address, then out again, to verify that the funds are indeed accessible.
+
+Transfer XTZ (from an exchange or any other source) to the address discovered above.
+
+Then, with CLI, do an outbound transfer to an outbound address that you control (such as an address for incoming transfer on an exchange). For example, to transfer 1 XTZ, issue the following command:
+
+```
+./mainnet.sh client -A mainnet-tezos.giganode.io -S -P 443 transfer 1 from ledger_tezos to <outbound address>
+```
+
+Since this is an on-chain operation, we pass the parameters `-A mainnet-tezos.giganode.io -S -P 443` to connect to a [publicly accessible Tezos node](https://tezos.giganode.io/). If you have a fully synced node running locally, you can omit these parameters.
+
 ### Transfer funds
 
-Transfer enough funds (at least one roll of XTZ) to the baker's public key hash.
+After verifying that you are able to transfer in and out of your baking address, transfer enough funds (at least one roll of XTZ) to start baking.
 
 ### Register as delegate
 
@@ -73,12 +87,15 @@ To start baking, you must sign an on-chain operation indicating the network that
 
 When you register, there is a grace period of two full cycles. Then, you get assigned baking and endorsing slots for five cycles in the future. It means that there is approximately a 21 day gap between the moment you register as delegate and your first on-chain validation operation. Hence it is required to perform this operation well in advance of the planned launch date of the baker.
 
-You need either a fully synced local Tezos node, or to connect to a public node. We recommend [Tezos Giga Node](https://tezos.giganode.io/).
 
 Issue the following operation:
 
 ```
-./mainnet.sh client register key legder_tezos as delegate
+./mainnet.sh client -A mainnet-tezos.giganode.io -S -P 443 register key legder_tezos as delegate
 ```
+
+Again, this is an on-chain operation, so you either need to connect to a public node (like above) or have a fully synced node running locally.
+
+Verify on an explorer such as tzstats that your address is indeed registered as a baker.
 
 [See Tezos official documentation for more details](https://tezos.gitlab.io/introduction/howtorun.html#register-and-check-your-rights)
