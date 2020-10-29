@@ -25,6 +25,7 @@ Contents
 * [Configure remote signer](deploy-remote-signer)
 * [Remote signer setup](setup_remote_signer)
 * [Deploy auxiliary cluster](deploy-auxiliary-cluster)
+* [Deploy public node only](deploy-public-node)
 * [Production readiness](production-readiness)
 * [Day 2 operations](day-2-operations)
 
