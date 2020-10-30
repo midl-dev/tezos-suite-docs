@@ -15,9 +15,17 @@ The pods will restart after some time. However, you may kill the pods to restart
 
 ### Tezos Protocol update
 
-When the Tezos protocol changes, be sure to edit the terraform variables `protocol` and `protocol_short` to match the new version.
+The Terraform variable `protocol` takes a list of Tezos protocols. Tezos regularly updates its protocol based on bakers votes.
+
+In case of imminent protocol upgrade, you may update your cluster after changing the protocol to pass **both the old and the new protocol**:
+
+```
+protocols =[ "006-PsCARTHA", "007-PsDELPH1" ]
+```
 
 Then, apply the changes. Your baker will restart with the right baking and endorsing daemons.
+
+The baker and endorsers daemons are only active when their protocol is running, otherwise they sit idle. So it is safe to run both at the same time.
 
 ### Remotely ssh into the remote signers
 

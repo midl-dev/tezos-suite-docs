@@ -17,3 +17,5 @@ rpc_public_hostname="my-public-rpc.example.com"
 # optional, the list of ips authorized to access the public rpc
 rpc_subnet_whitelist=["0.0.0.0/0"]
 ```
+
+The number of replicas for the Tezos node will be equal to the number of Kubernetes nodes (so by default, 2 nodes). Ingress RPC traffic will be load balanced between these nodes.

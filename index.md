@@ -27,6 +27,7 @@ Contents
 * [Deploy auxiliary cluster](deploy-auxiliary-cluster)
 * [Deploy public node only](deploy-public-node)
 * [Production readiness](production-readiness)
+* [Monitoring and alerting](monitoring-alerting)
 * [Day 2 operations](day-2-operations)
 
 Quick start
