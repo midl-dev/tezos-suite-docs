@@ -29,6 +29,7 @@ Contents
 * [Production readiness](production-readiness)
 * [Monitoring and alerting](monitoring-alerting)
 * [Day 2 operations](day-2-operations)
+* [Active standby baker (experimental)](active-standby)
 
 Quick start
 -----------
