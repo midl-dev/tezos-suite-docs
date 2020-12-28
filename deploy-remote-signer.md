@@ -1,8 +1,10 @@
 # Deploy a baker with remote signer
 
+The [quickstart]() indicates how to set up a cloud baker with the private keys hosted in a Kubernetes secrets. In this section, we configure a remote signer on-premises. This configuration is more secure and every mainnet deployment should use it.
+
 ## Prerequisites
 
-You will need your baking address and Ledger authorized path. [Follow these instructions](setup_baker) to get them.
+You will need your baking public key and Ledger authorized path. [Follow these instructions](setup_baker) to get them.
 
 ## Instructions
 
@@ -10,18 +12,24 @@ First, deploy the Tezos-on-GKE baking setup in the cluster.
 
 You may deploy it from the tezos-on-gke repo itself using the [quickstart](https://github.com/midl-dev/tezos-on-gke) instructions, however it is better to follow [production best practices](production-readiness).
 
-As parameter to deploy the cluster, provide a `baking_nodes` map as follows:
+In these instructions, we will be declaring a `tezos-baker` terraform module, keeping all sensitive data in a `terraform.tfvars` file.
+
+First, on an empty project dir, create a new `main.tf` file:
 
 ```
-baking_nodes = {
-  mynode = {
-    mybaker = {
-      public_baking_key="tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU"
-      ledger_authorized_path="ledger://my-four-key-words/ed25519/0h/1h",
-      authorized_signers : []
-
+module "tezos-baker" {
+  source = "github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create"
+  baking_nodes = {
+    mynode = {
+      mybaker = {
+        public_baking_key="edpk..."
+        public_baking_key_hash="tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU"
+        ledger_authorized_path="ledger://my-four-key-words/ed25519/0h/1h",
+        authorized_signers : []
+      }
     }
   }
+  signer_target_host_key=var.signer_target_host_key
 }
 ```
 
@@ -35,15 +43,21 @@ This way, in case of complete destruction of the cluster, the operator is able t
 
 Combined with a static hostname (see explanation below), the remote signer will connect to a newly recovered cluster without noticing it has changed. If the host key changes, there will be a ssh warning preventing the remote signer from connecting.
 
-Since you may not have access to the remote signer, it is essential to configure this host key.
+If you cannot directly ssh to the remote signer, setting the ssh host key means that it will automatically reconnect to the cluster, even if you destroy and reprovision it completely.
 
-Pass it as a variable to keep it secret:
+To generate a RSA host key, issue the following command on any computer:
 
 ```
-signer_target_host_key=var.signer_target_host_key
+ssh-keygen -q -N "" -t rsa -b 4096 -f tezos_tunnel_endpoint_host_rsa_key
 ```
 
-Then in terraform.tfvars, use a heredoc to specify the key:
+This value is sensitive, so we will configure it as a terraform variable. In the terraform module, we are passing it as a variable:
+
+```
+  signer_target_host_key=var.signer_target_host_key
+```
+
+In terraform.tfvars, use a heredoc to specify the key:
 
 ```
 signer_target_host_key = <<-EOK
@@ -91,19 +105,29 @@ cat /home/tezos/.ssh/id_rsa.pub
 
 You may now declare this remote signer in the terraform parameter `baking_nodes`.
 
-You need to pass the ssh public key as well as the signer forwarding port that you set up in the previous step:
+The `authorized_signers` list takes signer maps consisting of the following key/value pairs:
+
+* `ssh_pubkey`: the public key of the signer, generated at the previous step
+* `signer_port`: the port on the remote signer that is being forwarded to the cluster. This can be identical across signers, we recommend to leave it at the default value of 8443.
+* `tunnel_endpoint_port`: the port on the load balancer IP address that the ssh forwarder on the signer connects to. This must be unique to the signer.
 
 ```
-baking_nodes = {
-  mynode = {
-    mybaker = {
-      public_baking_key="tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU"
-      ledger_authorized_path="ledger://my-four-key-words/ed25519/0h/1h",
-      authorized_signers : [
+module "tezos-baker" {
+  source = "github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create"
+  baking_nodes = {
+    mynode = {
+      mybaker = {
+        public_baking_key="edpk..."
+        public_baking_key_hash="tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU"
+        ledger_authorized_path="ledger://my-four-key-words/ed25519/0h/1h",
+        authorized_signers : [
                 { "ssh_pubkey" : "ssh-rsa AAAAB<snip>==",
-                  "signer_port" : 8444 } ]
+                  "signer_port" : 8443,
+                  "tunnel_endpoint_port" : 51756 } ]
+      }
     }
   }
+  signer_target_host_key=var.signer_target_host_key
 }
 ```
 
@@ -116,7 +140,7 @@ Once terraform has deployed, you should be able to ssh from the signer to the en
 Test it by sshing to the signer as `tezos` user, then:
 
 ```
-ssh -p 58255 signer@<tunneling endpoint hostname>
+ssh -p 51756 signer@<tunneling endpoint hostname>
 ```
 
 The first time, you need to type `yes` to add this host to the known hosts.
@@ -124,3 +148,7 @@ The first time, you need to type `yes` to add this host to the known hosts.
 If you see the message `This account is not available`, it means that the connection has been succesfully established.
 
 If you are using alerting, and if the Ledger is connected and the baking app is on, the `NoRemoteSigner` alert should clear at this point.
+
+### Remote signer monitoring
+
+See [monitoring](monitoring-alerting) section.

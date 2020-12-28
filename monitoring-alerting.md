@@ -32,18 +32,24 @@ The webhook must be configured within the `baking_nodes` Terraform map parameter
 For example:
 
 ```
-baking_nodes = {
-  mynode = {
-    mybaker = {
-      public_baking_key="tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU"
-      ledger_authorized_path="ledger://my-four-key-words/ed25519/0h/1h",
-      monitoring_slack_url="https://hooks.slack.com/services/<snip>",
-      monitoring_slack_channel="#remote-signer-monitor",
-      authorized_signers : [
+module "tezos-baker" {
+  source = "github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create"
+  baking_nodes = {
+    mynode = {
+      mybaker = {
+        public_baking_key="edpk..."
+        public_baking_key_hash="tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU"
+        ledger_authorized_path="ledger://my-four-key-words/ed25519/0h/1h",
+        monitoring_slack_url="https://hooks.slack.com/services/<snip>",
+        monitoring_slack_channel="#remote-signer-monitor",
+        authorized_signers : [
                 { "ssh_pubkey" : "ssh-rsa AAAAB<snip>==",
-                  "signer_port" : 8444 } ]
+                  "signer_port" : 8443,
+                  "tunnel_endpoint_port" : 51756 } ]
+      }
     }
   }
+  signer_target_host_key=var.signer_target_host_key
 }
 ```
 
