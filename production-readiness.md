@@ -31,7 +31,7 @@ This keeps the setup maintainable by letting you define several deployments with
 
 The [terraform-gke-blockchain](https://github.com/midl-dev/terraform-gke-blockchain) repository contains boilerplate terraform code to deploy a kubernetes cluster.
 
-Start by declaring one empty cluster:
+Start by declaring one empty cluster and one terraform provider:
 
 ```
 module "terraform-gke-blockchain" {
@@ -45,6 +45,12 @@ module "terraform-gke-blockchain" {
     "monitoring_pool" : { "node_count": 1, "instance_type": "e2-standard-1" } }
 }
 
+# This file contains all the interactions with Kubernetes
+provider "kubernetes" {
+  host             = module.terraform-gke-blockchain.kubernetes_endpoint
+  cluster_ca_certificate = module.terraform-gke-blockchain.cluster_ca_certificate
+  token = data.google_client_config.current.access_token
+}
 ```
 
 Notice that we created two node pools. These are distinct virtual machines that run your kubernetes cluster. You can map your pods to either. We will be using these to separate the baker setup from the payout/monitoring setup.
