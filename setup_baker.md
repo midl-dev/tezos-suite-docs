@@ -58,7 +58,7 @@ It is considered good practice to always use a derived path instead of the root 
 Import the key into your client:
 
 ```
-sudo tezos-client import secret key ledger_tezos "ledger://<mnemonic>/ed25519/0'/1'"
+sudo tezos-client import secret key ledger_root "ledger://<mnemonic>/ed25519/0'/1'"
 ```
 
 Then read the public key hash associated with this Leger key and path:
@@ -78,7 +78,7 @@ Transfer XTZ (from an exchange or any other source) to the address discovered ab
 Then, with CLI, do an outbound transfer to an outbound address that you control (such as an address for incoming transfer on an exchange). For example, to transfer 1 XTZ, issue the following command:
 
 ```
-sudo tezos-client --endpoint https://mainnet-tezos.giganode.io transfer 1 from ledger_tezos to <outbound address>
+sudo tezos-client --endpoint https://mainnet-tezos.giganode.io transfer 1 from ledger_root to <outbound address>
 ```
 
 Since this is an on-chain operation, we pass the parameters `--endpoint https://mainnet-tezos.giganode.io` to connect to a [publicly accessible Tezos node](https://tezos.giganode.io/). If you have a fully synced node running locally, you can omit these parameters.
@@ -96,7 +96,7 @@ On the Ledger used for baking, launch the baking app and connect it to your comp
 Then issue the following:
 
 ```
-sudo tezos-client --endpoint https://mainnet-tezos.giganode.io setup ledger to bake for ledger_tezos
+sudo tezos-client --endpoint https://mainnet-tezos.giganode.io setup ledger to bake for ledger_root
 ```
 
 The Ledger should prompt you to confirm. Pay close attention to what is displayed on the Ledger screen, verify that it does what you want it to do.
@@ -111,7 +111,7 @@ When you register, there is a grace period of two full cycles. Then, you get ass
 With the Ledger used for baking still connected, issue the following operation:
 
 ```
-sudo tezos-client --endpoint https://mainnet-tezos.giganode.io register key legder_tezos as delegate
+sudo tezos-client --endpoint https://mainnet-tezos.giganode.io register key <baking address> as delegate
 ```
 
 Again, this is an on-chain operation, so you either need to connect to a public node (like above) or have a fully synced node running locally.
