@@ -31,6 +31,8 @@ To follow the instructions below, you will need to install the Tezos Command Lin
 
 The simplest way is to install the Docker containers then run the client in [privileged mode with USB volume mounted](https://tezos.stackexchange.com/questions/395/has-anyone-got-ledger-working-within-docker).
 
+All commands within the container must be prepended with `sudo`.
+
 Note that it is not needed to synchronize the blockchain.
 
 Launch the container in privileged mode with USB bus mounted, and open a terminal in it:
@@ -39,7 +41,7 @@ Launch the container in privileged mode with USB bus mounted, and open a termina
 docker run --entrypoint /bin/sh --privileged -v /dev/bus/usb:/dev/bus/usb -it --name=my-tezos-client tezos/tezos:latest-release
 ```
 
-Then issue the command `tezos-client list connected ledgers`.
+Then issue the command `sudo tezos-client list connected ledgers`.
 
 The Ledger URL including the four-animal-word mnemonic will be displayed, together with commands inviting you to import the key.
 
@@ -56,13 +58,13 @@ It is considered good practice to always use a derived path instead of the root 
 Import the key into your client:
 
 ```
-tezos-client import secret key ledger_tezos "ledger://<mnemonic>/ed25519/0'/1'"
+sudo tezos-client import secret key ledger_tezos "ledger://<mnemonic>/ed25519/0'/1'"
 ```
 
 Then read the public key hash associated with this Leger key and path:
 
 ```
-tezos-client list known addresses
+sudo tezos-client list known addresses
 ```
 
 Write down the Ledger URL and the baker's public key hash as they are necessary to spin up the cloud baker.
@@ -76,10 +78,10 @@ Transfer XTZ (from an exchange or any other source) to the address discovered ab
 Then, with CLI, do an outbound transfer to an outbound address that you control (such as an address for incoming transfer on an exchange). For example, to transfer 1 XTZ, issue the following command:
 
 ```
-tezos-client -A mainnet-tezos.giganode.io -S -P 443 transfer 1 from ledger_tezos to <outbound address>
+sudo tezos-client --endpoint https://mainnet-tezos.giganode.io transfer 1 from ledger_tezos to <outbound address>
 ```
 
-Since this is an on-chain operation, we pass the parameters `-A mainnet-tezos.giganode.io -S -P 443` to connect to a [publicly accessible Tezos node](https://tezos.giganode.io/). If you have a fully synced node running locally, you can omit these parameters.
+Since this is an on-chain operation, we pass the parameters `--endpoint https://mainnet-tezos.giganode.io` to connect to a [publicly accessible Tezos node](https://tezos.giganode.io/). If you have a fully synced node running locally, you can omit these parameters.
 
 The Ledger should prompt you to confirm. Pay close attention to what is displayed on the Ledger screen, verify that it does what you want it to do.
 
@@ -94,7 +96,7 @@ On the Ledger used for baking, launch the baking app and connect it to your comp
 Then issue the following:
 
 ```
-tezos-client -A mainnet-tezos.giganode.io -S -P 443 setup ledger to bake for ledger_tezos
+sudo tezos-client --endpoint https://mainnet-tezos.giganode.io setup ledger to bake for ledger_tezos
 ```
 
 The Ledger should prompt you to confirm. Pay close attention to what is displayed on the Ledger screen, verify that it does what you want it to do.
@@ -109,7 +111,7 @@ When you register, there is a grace period of two full cycles. Then, you get ass
 With the Ledger used for baking still connected, issue the following operation:
 
 ```
-./mainnet.sh client -A mainnet-tezos.giganode.io -S -P 443 register key legder_tezos as delegate
+sudo tezos-client --endpoint https://mainnet-tezos.giganode.io register key legder_tezos as delegate
 ```
 
 Again, this is an on-chain operation, so you either need to connect to a public node (like above) or have a fully synced node running locally.
