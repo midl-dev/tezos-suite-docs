@@ -31,7 +31,7 @@ On the other end, connect the USB cable to the power adapter.
 
 Check that the battery status LEDs indicate that the device is either charging or fully charged. In steady state, the device should be indicating a full charge. If that is not the case, your adapter may not be powerful enough.
 
-Check that the LED on the 4G LTE dongle shows a solid blue. If that is not the case, please move your setup to an area of cell phone coverage.
+Check that the LED on the 4G LTE dongle shows a solid blue for Huawei (blinking blue for ZTE). If that is not the case, please move your setup to an area of cell phone coverage.
 
 ## Connect Ledger
 
