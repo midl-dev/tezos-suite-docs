@@ -36,3 +36,11 @@ Check that the LED on the 4G LTE dongle shows a solid blue for Huawei (blinking 
 ## Connect Ledger
 
 Connect the Baking Ledger Nano S to the Micro-USB end of the adapter. Unlock it and launch the baking app.
+
+## Test alerts
+
+Once the signer is connected to the cloud backend, you may test that the alerting system is working properly.
+
+1. Unplug remote signer power connection.
+1. Unplug remote signer wired network connection.
+1. Unplug Ledger from remote signer.
