@@ -96,10 +96,12 @@ On the Ledger used for baking, launch the baking app and connect it to your comp
 Then issue the following:
 
 ```
-sudo tezos-client --endpoint https://mainnet-tezos.giganode.io setup ledger to bake for ledger_root
+sudo tezos-signer setup ledger to bake for ledger_root --main-chain-id NetXdQprcVkpaWU
 ```
 
 The Ledger should prompt you to confirm. Pay close attention to what is displayed on the Ledger screen, verify that it does what you want it to do.
+
+Note: `NetXdQprcVkpaWU` is the chain id for Tezos mainnet. For a testnet deployment, change it to the relevant chain-id.
 
 ### Register as delegate
 
