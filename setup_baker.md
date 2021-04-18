@@ -99,7 +99,7 @@ Then issue the following:
 sudo tezos-signer setup ledger to bake for ledger_root --main-chain-id NetXdQprcVkpaWU
 ```
 
-The Ledger should prompt you to confirm. Pay close attention to what is displayed on the Ledger screen, verify that it does what you want it to do.
+The Ledger should prompt you to confirm. It will display the baker address and the chain ID. Verify that it corresponds to your baker address.
 
 Note: `NetXdQprcVkpaWU` is the chain id for Tezos mainnet. For a testnet deployment, change it to the relevant chain-id.
 
