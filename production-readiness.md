@@ -133,17 +133,17 @@ terraform {
 
 variable "hot_wallet_private_key" {
   description = "secret key for the baker payout account"
-  type = "string"
+  type = string
 }
 
 variable "website_builder_private_key" {
   description = "secret key for the google storage bucket where the baking website is located"
-  type = "string"
+  type = string
 }
 
 variable "insecure_private_baking_key" {
   description = "secret key for the baker. warning: for a mainnet baker, use a hardware wallet instead"
-  type = "string"
+  type = string
 }
 
 module "terraform-gke-blockchain" {
