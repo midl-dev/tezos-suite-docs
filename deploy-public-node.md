@@ -7,7 +7,7 @@ If you do not pass any value to the `baking_nodes` variable, the setup will come
 Here is an example Terraform configuration to deploy a public node:
 
 ```
-tezos_sentry_version="v7.4"
+tezos_version="v9.2"
 monitoring_slack_url = var.monitoring_slack_url
 tezos_network="mainnet"
 node_storage_size=40

@@ -10,20 +10,20 @@ experimental_active_standby_mode=true
 
 ## Architecture
 
-Tezos-on-gke runs in a Kubernetes cluster with two availability zones. It uses a regional persistent volume for the private node storage, so in case one kubernetes node goes down, the private node can restart in another zone.
+Tezos-on-gke runs in a Kubernetes cluster with two availability zones. It uses a regional persistent volume for the node storage, so in case one kubernetes node goes down, the node can restart in another zone.
 
 Reasons for kubernetes node to go down include:
 
 * catastrophic failure of one cloud availability zone (unlikely)
 * Kubernetes cluster auto-upgrades (more common)
 
-When this happens, the private node migrates to the other node. This has been working fine and providing good uptime.
+When this happens, the node migrates to the other node. This has been working fine and providing good uptime.
 
-There is a problem, though. During a migration, the node does a cold restart, which means it needs to initialize itself, establish connections with the sentry nodes, and import the blocks it missed during the time off. This can easily take minutes, and during this time, blocks and endorsements may be missed.
+There is a problem, though. During a migration, the node does a cold restart, which means it needs to initialize itself, establish connections with peers, and import the blocks it missed during the time off. This can easily take minutes, and during this time, blocks and endorsements may be missed.
 
 We introduce an active-standby model where:
 
-* we start two private baking nodes, one in each availability zone
+* we start two baking nodes, one in each availability zone
 * we no longer use regional volumes: storage is local to the AZ
 * only one node is baking at a time; kubernetes native consensus mechanism is used to elect the master
 

@@ -80,8 +80,7 @@ module "tezos-baker" {
   rolling_snapshot_url            = "https://mainnet.xtz-shots.io/rolling"
   kubernetes_namespace            = "tezos"
   kubernetes_name_prefix          = "xtz"
-  tezos_private_version           = "v9.2"
-  tezos_sentry_version            = "v9.2"
+  tezos_version                   = "v9.2"
   tezos_network                   = "mainnet"
   baking_nodes = {
     "mybaker" : {
@@ -116,8 +115,7 @@ module "tezos-baker" {
   rolling_snapshot_url            = "https://mainnet.xtz-shots.io/rolling"
   kubernetes_namespace            = "tezos"
   kubernetes_name_prefix          = "xtz"
-  tezos_private_version           = "v9.2"
-  tezos_sentry_version            = "v9.2"
+  tezos_version                   = "v9.2"
   tezos_network                   = "mainnet"
   signer_target_host_key=var.signer_target_host_key
   baking_nodes = {
@@ -178,21 +176,6 @@ terraform {
   }
 }
 
-variable "hot_wallet_private_key" {
-  description = "secret key for the baker payout account"
-  type = string
-}
-
-variable "website_builder_private_key" {
-  description = "secret key for the google storage bucket where the baking website is located"
-  type = string
-}
-
-variable "insecure_private_baking_key" {
-  description = "secret key for the baker. warning: for a mainnet baker, use a hardware wallet instead"
-  type = string
-}
-
 module "terraform-gke-blockchain" {
   source                                = "github.com/midl-dev/terraform-gke-blockchain?ref=v1.0"
   org_id                                = "<my org id, defined above>"
@@ -216,10 +199,10 @@ module "tezos-baker" {
   kubernetes_pool_name            = "baking_pool"
   kubernetes_namespace            = "tezos"
   kubernetes_name_prefix          = "xtz"
-  full_snapshot_url               = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.full"
-  rolling_snapshot_url            = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.rolling"
-  tezos_private_version           = "v7.3"
-  tezos_sentry_version            = "v7.3"
+  full_snapshot_url               = "https://mainnet.xtz-shots.io/full"
+  rolling_snapshot_url            = "https://mainnet.xtz-shots.io/rolling"
+  kubernetes_namespace            = "tezos"
+  tezos_version                   = "v9.2"
   tezos_network                   = "mainnet"
   signer_target_host_key=var.signer_target_host_key
   baking_nodes = {
@@ -262,8 +245,7 @@ module "tezos-mainnet-monitoring" {
   kubernetes_pool_name            = "monitoring_pool"
   kubernetes_namespace            = "tezos"
   kubernetes_name_prefix          = "xtz"
-  tezos_private_version           = "v7.3"
-  tezos_sentry_version            = "v7.3"
+  tezos_private_version           = "v9.2"
   website                         = "my_baking_website"
   website_bucket_url              = "<my bucket url>"
   website_archive                 = "<my_website_archive_url>"

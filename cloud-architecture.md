@@ -16,11 +16,11 @@ Tezos mainnet is fully supported as well as Carthagenet and future test networks
 
 ## Secure cloud setup
 
-We use sentry nodes for protection against DDoS attacks on the validator. Security policies are applied in every pod to ensure all traffic is legitimate.
+Network security policies are applied in every pod to ensure all traffic is legitimate.
 
 ## Fast bringup time
 
-The sentry nodes and private node are brought up from a snapshot for faster turnaround time and disaster recovery.
+The nodes are brought up from a snapshot for faster turnaround time and disaster recovery.
 
 ## Ledgers for key storage
 
