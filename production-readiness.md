@@ -76,23 +76,70 @@ module "tezos-baker" {
   kubernetes_access_token         = data.google_client_config.current.access_token
   kubernetes_pool_name            = "baking_pool"
   project                         = module.terraform-gke-blockchain.project
-  full_snapshot_url               = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.full"
-  rolling_snapshot_url            = "https://snaps.tulip.tools/mainnet_2020-08-19_08:00.rolling"
+  full_snapshot_url               = "https://mainnet.xtz-shots.io/full"
+  rolling_snapshot_url            = "https://mainnet.xtz-shots.io/rolling"
   kubernetes_namespace            = "tezos"
   kubernetes_name_prefix          = "xtz"
-  tezos_private_version           = "v7.3"
-  tezos_sentry_version            = "v7.3"
+  tezos_private_version           = "v9.2"
+  tezos_sentry_version            = "v9.2"
   tezos_network                   = "mainnet"
   baking_nodes = {
     "mybaker" : {
       "mynode" : {
-        "public_baking_key": "tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU",
+        "public_baking_key_hash": "tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU",
+        "public_baking_key": "edpk...",
         "insecure_private_baking_key": "edsk3cftTNcJnxb7ehCxYeCaKPT7mjycdMxgFisLixrQ9bZuTG2yZK"
       }
     }
   }
 }
 ```
+
+### With remote signer
+
+It is recommended to use a remote signer for secure operations.
+
+Below is an example of baker with remote signer configured:
+
+```
+module "tezos-baker" {
+  source                          = "github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create"
+  region                          = module.terraform-gke-blockchain.location
+  node_locations                  = module.terraform-gke-blockchain.node_locations
+  kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
+  cluster_ca_certificate          = module.terraform-gke-blockchain.cluster_ca_certificate
+  cluster_name                    = module.terraform-gke-blockchain.name
+  kubernetes_access_token         = data.google_client_config.current.access_token
+  kubernetes_pool_name            = "baking_pool"
+  project                         = module.terraform-gke-blockchain.project
+  full_snapshot_url               = "https://mainnet.xtz-shots.io/full"
+  rolling_snapshot_url            = "https://mainnet.xtz-shots.io/rolling"
+  kubernetes_namespace            = "tezos"
+  kubernetes_name_prefix          = "xtz"
+  tezos_private_version           = "v9.2"
+  tezos_sentry_version            = "v9.2"
+  tezos_network                   = "mainnet"
+  signer_target_host_key=var.signer_target_host_key
+  baking_nodes = {
+    "mybaker" : {
+      "mynode" : {
+        "public_baking_key_hash": "tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU",
+        "public_baking_key": "edpk...",
+        "ledger_authorized_path": "ledger://my-four-key-words/ed25519/0h/1h",
+        authorized_signers : [
+                { "ssh_pubkey" : "ssh-rsa AAAAB<snip>==",
+                  "signer_port" : 8443,
+                  "tunnel_endpoint_port" : 51756 }
+        ]
+      }
+    }
+  }
+}
+```
+
+### With payout config
+
+The `baking_nodes` section also accepts a config for TRD payouts. See the [TRD payouts](trd-payouts) section for details.
 
 ## Terraform remote state
 
@@ -174,11 +221,30 @@ module "tezos-baker" {
   tezos_private_version           = "v7.3"
   tezos_sentry_version            = "v7.3"
   tezos_network                   = "mainnet"
+  signer_target_host_key=var.signer_target_host_key
   baking_nodes = {
-    "mybaker" : {
-      "mynode" : {
-        "public_baking_key": "tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU",
-        "insecure_private_baking_key": var.insecure_private_baking_key
+    "mynode" : {
+      "mybaker" : {
+        "public_baking_key_hash": "tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU",
+        "public_baking_key": "edpk...",
+        "ledger_authorized_path": "ledger://my-four-key-words/ed25519/0h/1h",
+        authorized_signers : [
+                { "ssh_pubkey" : "ssh-rsa AAAAB<snip>==",
+                  "signer_port" : 8443,
+                  "tunnel_endpoint_port" : 51756 }
+        ]
+        "payout_config" = {
+          "schedule"="06 */3 * * *",
+          "initial_cycle": 370,
+          "release_override": -5,
+          "network": "MAINNET",
+          "reward_data_provider": "tzkt",
+          "dry_run": "false",
+          "payment_address": "tz1",
+          "rewards_type": "actual",
+          "service_fee": 5,
+          "rules_map": {}
+        }
       }
     }
   }
@@ -202,13 +268,6 @@ module "tezos-mainnet-monitoring" {
   website_bucket_url              = "<my bucket url>"
   website_archive                 = "<my_website_archive_url>"
   public_baking_key               = "<public baking key goes here>"
-  hot_wallet_public_key           = "<payout key goes here>"
-  witness_payout_address          = "<payout witness address goes here>"
-  hot_wallet_private_key          = var.hot_wallet_private_key
-  website_builder_private_key     = var.website_builder_private_key
-  payout_fee                      = "5 % 100"
-  payout_starting_cycle           = "203"
-  payout_delay                    = "0"
 }
 ```
 
