@@ -1,6 +1,6 @@
 # Cloud Architecture
 
-The best known baking tool, Kiln, is a complete solution for home baking, to be installed on physical hardware. MIDL.dev, in contrast, outsources most of the computing to the cloud, increasing reliability and decreasing the operating burden of the baking operations.
+The best known baking tool, [Kiln](https://gitlab.com/tezos-kiln/kiln/), is a complete solution for home baking, to be installed on physical hardware. MIDL.dev, in contrast, outsources most of the computing to the cloud, increasing reliability and decreasing the operating burden of the baking operations.
 
 ## Managed Kubernetes
 
@@ -18,7 +18,7 @@ Tezos mainnet is fully supported as well as Carthagenet and future test networks
 
 Network security policies are applied in every pod to ensure all traffic is legitimate.
 
-## Fast bringup time
+## Fast bring-up time
 
 The nodes are brought up from a snapshot for faster turnaround time and disaster recovery.
 
