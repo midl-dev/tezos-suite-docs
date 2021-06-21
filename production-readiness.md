@@ -67,7 +67,7 @@ It looks like:
 
 ```
 module "tezos-baker" {
-  source                          = "github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create"
+  source                          = "github.com/midl-dev/tezos-on-gke?ref=v3.0//terraform-no-cluster-create"
   region                          = module.terraform-gke-blockchain.location
   node_locations                  = module.terraform-gke-blockchain.node_locations
   kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
@@ -102,7 +102,7 @@ Below is an example of a baker with remote signer configured:
 
 ```
 module "tezos-baker" {
-  source                          = "github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create"
+  source                          = "github.com/midl-dev/tezos-on-gke?ref=v3.0//terraform-no-cluster-create"
   region                          = module.terraform-gke-blockchain.location
   node_locations                  = module.terraform-gke-blockchain.node_locations
   kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
@@ -177,7 +177,7 @@ terraform {
 }
 
 module "terraform-gke-blockchain" {
-  source                                = "github.com/midl-dev/terraform-gke-blockchain?ref=v1.0"
+  source                                = "github.com/midl-dev/terraform-gke-blockchain?ref=v1.2"
   org_id                                = "<my org id, defined above>"
   billing_account                       = "<my billing account, defined above>"
   project_prefix                        = "mybakingop"
@@ -188,7 +188,7 @@ module "terraform-gke-blockchain" {
 }
 
 module "tezos-baker" {
-  source                          = "github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create"
+  source                          = "github.com/midl-dev/tezos-on-gke?ref=v3.0//terraform-no-cluster-create"
   region                          = module.terraform-gke-blockchain.location
   node_locations                  = module.terraform-gke-blockchain.node_locations
   kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
@@ -233,7 +233,7 @@ module "tezos-baker" {
 }
 
 module "tezos-mainnet-monitoring" {
-  source                          = "github.com/midl-dev/tezos-auxiliary-cluster?ref=v2.0//terraform-no-cluster-create"
+  source                          = "github.com/midl-dev/tezos-auxiliary-cluster?ref=v1.1//terraform-no-cluster-create"
   region                          = module.terraform-gke-blockchain.location
   node_locations                  = module.terraform-gke-blockchain.node_locations
   kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
