@@ -18,7 +18,7 @@ Tezos mainnet is fully supported as well as Carthagenet and future test networks
 
 Network security policies are applied in every pod to ensure all traffic is legitimate.
 
-## Fast boostrapping
+## Fast bootstrapping
 
 The nodes are brought up from a snapshot for faster turnaround time and disaster recovery.
 
