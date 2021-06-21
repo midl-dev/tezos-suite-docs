@@ -201,7 +201,6 @@ module "tezos-baker" {
   kubernetes_name_prefix          = "xtz"
   full_snapshot_url               = "https://mainnet.xtz-shots.io/full"
   rolling_snapshot_url            = "https://mainnet.xtz-shots.io/rolling"
-  kubernetes_namespace            = "tezos"
   tezos_version                   = "v9.2"
   tezos_network                   = "mainnet"
   signer_target_host_key=var.signer_target_host_key
