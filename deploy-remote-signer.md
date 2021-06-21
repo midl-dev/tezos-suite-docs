@@ -1,6 +1,6 @@
 # Deploy a baker with remote signer
 
-The [quickstart]() indicates how to set up a cloud baker with the private keys hosted in a Kubernetes secrets. In this section, we configure a remote signer on-premises. This configuration is more secure and every mainnet deployment should use it.
+The [quickstart guide](quickstart) indicates how to set up a cloud baker with the private keys hosted in [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/). In this section, we configure a remote signer on-premises. This configuration is more secure and every mainnet deployment should use it.
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ First, deploy the Tezos-on-GKE baking setup in the cluster.
 
 You may deploy it from the tezos-on-gke repo itself using the [quickstart](https://github.com/midl-dev/tezos-on-gke) instructions, however it is better to follow [production best practices](production-readiness).
 
-In these instructions, we will be declaring a `tezos-baker` terraform module, keeping all sensitive data in a `terraform.tfvars` file.
+In these instructions, we will be declaring a `tezos-baker` Terraform module, keeping all sensitive data in a `terraform.tfvars` file.
 
 First, on an empty project dir, create a new `main.tf` file:
 
@@ -51,7 +51,7 @@ To generate a RSA host key, issue the following command on any computer:
 ssh-keygen -q -N "" -t rsa -b 4096 -f tezos_tunnel_endpoint_host_rsa_key
 ```
 
-This value is sensitive, so we will configure it as a terraform variable. In the terraform module, we are passing it as a variable:
+This value is sensitive, so we will configure it as a Terraform variable. In the terraform module, we are passing it as a variable:
 
 ```
   signer_target_host_key=var.signer_target_host_key
@@ -135,7 +135,7 @@ Then `taint` and `apply` the terraform module.
 
 ### Test the endpoint
 
-Once terraform has deployed, you should be able to ssh from the signer to the endpoint.
+Once Terraform has deployed, you should be able to ssh from the signer to the endpoint.
 
 Test it by sshing to the signer as `tezos` user, then:
 
