@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Remote signer architecture &mdash; MIDL.dev Tezos Suite  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Initial baker setup" href="setup_baker.html" />
+    <link rel="prev" title="Cloud Architecture" href="cloud-architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MIDL.dev Tezos Suite
+          
+
+          
+            
+            <img src="_static/midl-dev-notext.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cloud-architecture.html">Cloud Architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Remote Signer Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#connectivity">Connectivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sshing-to-the-remote-signer">Sshing to the remote signer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="setup_baker.html">Initial baker setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-remote-signer.html">Configure remote signer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_remote_signer.html">Remote signer setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external-monitoring.html">External monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trd-payouts.html">TRD Payouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-public-node.html">Deploy public node only</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-readiness.html">Production readiness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-alerting.html">Monitoring and alerting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="day-2-operations.html">Day 2 operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="active-standby.html">Active standby baker (experimental)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MIDL.dev Tezos Suite</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Remote signer architecture</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/remote-signer-architecture.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="remote-signer-architecture">
+<h1>Remote signer architecture<a class="headerlink" href="#remote-signer-architecture" title="Permalink to this headline">¶</a></h1>
+<p>The remote signer consists of a computer and a Ledger hardware wallet. The Ledger is always online, and running the Tezos baking app.</p>
+<p>The computer can be a laptop, or a Raspberry Pi with battery backup. It supports a redundant 4g connection in case the power or main internet connection goes down.</p>
+<div class="section" id="connectivity">
+<h2>Connectivity<a class="headerlink" href="#connectivity" title="Permalink to this headline">¶</a></h2>
+<p>The signing device is running the <a class="reference external" href="https://tezos.gitlab.io/user/key-management.html#signer">native remote signer daemon</a> from the Tezos project. A <a class="reference external" href="https://github.com/midl-dev/tezos-remote-signer-os/blob/master/tezos-remote-signer/templates/usr/lib/python3/tezos-signer-wrapper/signerWrapper.py">wrapper script</a> adds monitoring endpoints.</p>
+<p>The remote signer connects to a cloud endpoint with ssh. When the ssh connection goes down for any reason, it always tries to reestablish it.</p>
+<p>Then ssh tunneling is established. The signer endpoint is exposed to the cloud baker and endorser.</p>
+<p>When a baking or endorsing signature request comes in, it is tunneled to the remote signer which interacts with the Ledger to sign the bytes. The private keys never leave the Ledger device, so even in case of compromise of the cloud environment or the remote signer itself, the keys are unreachable from the attacker.</p>
+<p>Several remote signers are supported within a single cloud environment. Each signer is identified by its ssh public key and its forwarded port number. This data is passed as parameter when spinning up the cloud environment.</p>
+<p>The host key of the ssh server that serves as tunneling endpoint must also be passed as parameter. This way, in case of disaster, it is possible to respin the cloud environment from scratch, keeping the same host key, so the remote signer can automatically connect to it once the setup is available again.</p>
+<p>Note that <strong>at the outer level</strong>, the signer connects to the cloud environment, not the other way around. This is helpful when the signer is located behind a NAT, it can always connect to the public ssh tunneling endpoint.</p>
+</div>
+<div class="section" id="sshing-to-the-remote-signer">
+<h2>Sshing to the remote signer<a class="headerlink" href="#sshing-to-the-remote-signer" title="Permalink to this headline">¶</a></h2>
+<p>In case where the remote signer is in a location where sshing locally is not possible, ssh port 22 is also tunneled. The remote signer also exposes its own ssh port (22) to the tunneling endpoint. By convention, the port for the ssh endpoint is (signer port + 1000).</p>
+<p>Kubernetes allows you to forward ports to your workstation. After forwarding the relevant port on the remote signer forwarder, you can ssh to the remote signer locally.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="setup_baker.html" class="btn btn-neutral float-right" title="Initial baker setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cloud-architecture.html" class="btn btn-neutral float-left" title="Cloud Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, MIDL.dev
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

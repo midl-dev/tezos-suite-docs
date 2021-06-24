@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TRD payouts &mdash; MIDL.dev Tezos Suite  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deploy a public node" href="deploy-public-node.html" />
+    <link rel="prev" title="External monitoring" href="external-monitoring.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MIDL.dev Tezos Suite
+          
+
+          
+            
+            <img src="_static/midl-dev-notext.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cloud-architecture.html">Cloud Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-signer-architecture.html">Remote Signer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_baker.html">Initial baker setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-remote-signer.html">Configure remote signer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_remote_signer.html">Remote signer setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external-monitoring.html">External monitoring</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">TRD Payouts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#isolation">Isolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-example">Full example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-public-node.html">Deploy public node only</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-readiness.html">Production readiness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-alerting.html">Monitoring and alerting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="day-2-operations.html">Day 2 operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="active-standby.html">Active standby baker (experimental)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MIDL.dev Tezos Suite</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>TRD payouts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/trd-payouts.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="trd-payouts">
+<h1>TRD payouts<a class="headerlink" href="#trd-payouts" title="Permalink to this headline">¶</a></h1>
+<p>We support the <a class="reference external" href="https://github.com/tezos-reward-distributor-organization/tezos-reward-distributor">Tezos Reward Distributor</a> natively.</p>
+<p>The payout address must be on the same remote signer used for baking.</p>
+<p>While the baking address can be on a Ledger device, the payout address must be on a hot wallet directly on the signer.</p>
+<p>TRD works as a <strong>cronjob</strong>, meaning that it runs on a schedule, attempts to do a payout if there is one outstanding, then exits immediately. In TRD documentation, this is refered to as “run mode 2”.</p>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">baking_nodes</span></code> object passed to tezos-on-gke optionally supports passing a <code class="docutils literal notranslate"><span class="pre">payout_config</span></code> object structured as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="s2">&quot;tezos-baker&quot;</span> <span class="p">{</span>
+  <span class="n">baking_nodes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;mynode&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;mybaker&quot;</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;public_baking_key&quot;</span><span class="p">:</span> <span class="s2">&quot;tz1xxx&quot;</span><span class="p">,</span>
+        <span class="c1"># more parameters (signer config, etc...) go here</span>
+        <span class="s2">&quot;payout_config&quot;</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="s2">&quot;schedule&quot;</span><span class="o">=</span><span class="s2">&quot;06 */3 * * *&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;initial_cycle&quot;</span><span class="p">:</span> <span class="mi">370</span><span class="p">,</span>
+          <span class="s2">&quot;release_override&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+          <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="s2">&quot;MAINNET&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;reward_data_provider&quot;</span><span class="p">:</span> <span class="s2">&quot;tzkt&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;dry_run&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;payment_address&quot;</span><span class="p">:</span> <span class="s2">&quot;tz1&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;rewards_type&quot;</span><span class="p">:</span> <span class="s2">&quot;actual&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;service_fee&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="s2">&quot;rules_map&quot;</span><span class="p">:</span> <span class="p">{}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is then converted into TRD parameters and passed to the TRD configuration.</p>
+<p>Most <a class="reference external" href="https://tezos-reward-distributor-organization.github.io/tezos-reward-distributor/configuration.html">TRD configuration parameters</a> are supported.</p>
+<p>Be sure to run in <code class="docutils literal notranslate"><span class="pre">dry_mode</span></code> <code class="docutils literal notranslate"><span class="pre">true</span></code> at first to make sure that the payout engine works as expected.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">schedule</span></code> parameter indicates how often the cronjob should run. It should be in cron format.</p>
+</div>
+<div class="section" id="isolation">
+<h2>Isolation<a class="headerlink" href="#isolation" title="Permalink to this headline">¶</a></h2>
+<p>It is recommended to run TRD payouts in a different node pool than the tezos nodes, for isolation.</p>
+<p>You can configure the node pool used for payouts with the <code class="docutils literal notranslate"><span class="pre">kubernetes_payout_pool_name</span></code> terraform variable.</p>
+</div>
+<div class="section" id="full-example">
+<h2>Full example<a class="headerlink" href="#full-example" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference internal" href="production-readiness.html"><span class="doc">production readiness</span></a> section for a full example of baker with payout configured.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="deploy-public-node.html" class="btn btn-neutral float-right" title="Deploy a public node" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="external-monitoring.html" class="btn btn-neutral float-left" title="External monitoring" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, MIDL.dev
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

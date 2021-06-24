@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Active-standby baking nodes &mdash; MIDL.dev Tezos Suite  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Day 2 operations" href="day-2-operations.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MIDL.dev Tezos Suite
+          
+
+          
+            
+            <img src="_static/midl-dev-notext.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cloud-architecture.html">Cloud Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-signer-architecture.html">Remote Signer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_baker.html">Initial baker setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-remote-signer.html">Configure remote signer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_remote_signer.html">Remote signer setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external-monitoring.html">External monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trd-payouts.html">TRD Payouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-public-node.html">Deploy public node only</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-readiness.html">Production readiness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-alerting.html">Monitoring and alerting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="day-2-operations.html">Day 2 operations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Active standby baker (experimental)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kubernetes-master-elector">Kubernetes master elector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tezos-sidecar">Tezos sidecar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nonce-exchange">Nonce exchange</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#benefits">Benefits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#risks">Risks</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MIDL.dev Tezos Suite</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Active-standby baking nodes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/active-standby.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="active-standby-baking-nodes">
+<h1>Active-standby baking nodes<a class="headerlink" href="#active-standby-baking-nodes" title="Permalink to this headline">¶</a></h1>
+<p>For release <code class="docutils literal notranslate"><span class="pre">v2.0</span></code> of tezos-on-gke, we are introducing a new, experimental mode of operation: the active-standby baker.</p>
+<p>This feature can be activated by passing the following terraform variable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">experimental_active_standby_mode</span><span class="o">=</span><span class="n">true</span>
+</pre></div>
+</div>
+<div class="section" id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<p>Tezos-on-gke runs in a Kubernetes cluster with two availability zones. It uses a regional persistent volume for the node storage, so in case one kubernetes node goes down, the node can restart in another zone.</p>
+<p>Reasons for kubernetes node to go down include:</p>
+<ul class="simple">
+<li>catastrophic failure of one cloud availability zone (unlikely)</li>
+<li>Kubernetes cluster auto-upgrades (more common)</li>
+</ul>
+<p>When this happens, the node migrates to the other node. This has been working fine and providing good uptime.</p>
+<p>There is a problem, though. During a migration, the node does a cold restart, which means it needs to initialize itself, establish connections with peers, and import the blocks it missed during the time off. This can easily take minutes, and during this time, blocks and endorsements may be missed.</p>
+<p>We introduce an active-standby model where:</p>
+<ul class="simple">
+<li>we start two baking nodes, one in each availability zone</li>
+<li>we no longer use regional volumes: storage is local to the AZ</li>
+<li>only one node is baking at a time; kubernetes native consensus mechanism is used to elect the master</li>
+</ul>
+<div class="section" id="kubernetes-master-elector">
+<h3>Kubernetes master elector<a class="headerlink" href="#kubernetes-master-elector" title="Permalink to this headline">¶</a></h3>
+<p>When two baking nodes are live, we need to select one to be the active baker. This problem can be solved with a distributed consensus protocol such as Raft. The good news is, Kubernetes already uses Raft and etcd natively, so we do not have to deploy it inside our cluster. We can leverage the native mechanism to elect our baker. The master election pattern is a <a class="reference external" href="https://kubernetes.io/blog/2016/01/simple-leader-election-with-kubernetes/">Kubernetes classic</a>.</p>
+<p>Kubernetes Stateful Sets are a good fit for active-standby baker nodes, since they each have their own persistent storage. The Kubernetes scheduler will do its best to ensure at least one member of the set is ready at any point in time.</p>
+<p>In this context, an individual pod teardown is a normal event. It could be due to an auto-upgrade, or a cluster scale-down. These events driven by Kubernetes control plane affect the master election.</p>
+<p>We are making the pods aware of these changes of master by running a <code class="docutils literal notranslate"><span class="pre">master-elector</span></code> container and wrapping the baker and endorser processes into a supervisord script that will only start the daemons on the current master node.</p>
+</div>
+<div class="section" id="tezos-sidecar">
+<h3>Tezos sidecar<a class="headerlink" href="#tezos-sidecar" title="Permalink to this headline">¶</a></h3>
+<p>We can further improve this setup by informing Kubernetes of the baking node <code class="docutils literal notranslate"><span class="pre">liveness</span></code> and <code class="docutils literal notranslate"><span class="pre">readiness</span></code>.</p>
+<p>A Tezos node is <code class="docutils literal notranslate"><span class="pre">alive</span></code> if and only if it has at least one connection to a peer. A Tezos node is <code class="docutils literal notranslate"><span class="pre">ready</span></code> if the timestamp of its head block is at most 4 minutes old.</p>
+<p>The Tezos sidecar running inside the baking pod will inform Kubernetes of the status of the baker. If for some reason, one node did not get the most recent blocks and is stuck in the past, the node will be marked as “not ready” and the other node will start baking. This further improves the usefulness of the active-standby setup.</p>
+</div>
+<div class="section" id="nonce-exchange">
+<h3>Nonce exchange<a class="headerlink" href="#nonce-exchange" title="Permalink to this headline">¶</a></h3>
+<p>A baker selected to bake a block whose height is a multiple of 32 must produce a nonce and store it for revelation at the next cycle. These nonces are stored locally in the <code class="docutils literal notranslate"><span class="pre">client</span></code> storage dir.</p>
+<p>When a switchover happens, the new master does not have the nonce, so it must retrieve it from the standby node. If the nonce is not revealed, the baking reward is lost.</p>
+<p>We built <code class="docutils literal notranslate"><span class="pre">nonce-importer</span></code> and <code class="docutils literal notranslate"><span class="pre">nonce-exposer</span></code> containers that ensure that any new nonce built on one baker is written to the other baker’s storage.</p>
+</div>
+</div>
+<div class="section" id="benefits">
+<h2>Benefits<a class="headerlink" href="#benefits" title="Permalink to this headline">¶</a></h2>
+<p>For a very busy baker, this setup can eliminate small amounts of downtime caused by a unique baker pod when it is restarting.</p>
+<p>It makes operations easier: if some work has to be made on a baking node for any reason (software upgrade for example), the standby can take over.</p>
+<p>This also protects against software failures: if the node is rendered unrecoverable, it is possible to rebuild it from scratch while the other node takes over the baking tasks.</p>
+</div>
+<div class="section" id="risks">
+<h2>Risks<a class="headerlink" href="#risks" title="Permalink to this headline">¶</a></h2>
+<p>Split-brain is a classic scenario where two nodes are active because they lost communication with each other. In this case, the second level of defense is the signer.</p>
+<p>The signer should refuse to sign two blocks at the same height. Using a remote signer device connected to a Ledger will achieve that.</p>
+<p>When using Tezos-on-GKE with a cloud hosted key, do not enable this active-standby mode.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="day-2-operations.html" class="btn btn-neutral float-left" title="Day 2 operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, MIDL.dev
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
