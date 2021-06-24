@@ -177,7 +177,7 @@ terraform {
 }
 
 module "terraform-gke-blockchain" {
-  source                                = "github.com/midl-dev/terraform-gke-blockchain?ref=v1.2"
+  source                                = "github.com/midl-dev/terraform-gke-blockchain?ref=v2.0"
   org_id                                = "<my org id, defined above>"
   billing_account                       = "<my billing account, defined above>"
   project_prefix                        = "mybakingop"
@@ -233,7 +233,7 @@ module "tezos-baker" {
 }
 
 module "tezos-mainnet-monitoring" {
-  source                          = "github.com/midl-dev/tezos-auxiliary-cluster?ref=v1.1//terraform-no-cluster-create"
+  source                          = "github.com/midl-dev/tezos-auxiliary-cluster?ref=v2.0//terraform-no-cluster-create"
   region                          = module.terraform-gke-blockchain.location
   node_locations                  = module.terraform-gke-blockchain.node_locations
   kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
