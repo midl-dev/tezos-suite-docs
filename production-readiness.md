@@ -246,10 +246,16 @@ module "tezos-mainnet-monitoring" {
   kubernetes_namespace            = "tezos"
   kubernetes_name_prefix          = "xtz"
   tezos_private_version           = "v9.2"
-  website                         = "my_baking_website"
-  website_bucket_url              = "<my bucket url>"
-  website_archive                 = "<my_website_archive_url>"
-  public_baking_key               = "<public baking key goes here>"
+  protocol                        = "009-PsFLoren"
+  protocol_short                  = "PsFLoren"
+  rolling_snapshot_url            = "https://mainnet.xtz-shots.io/rolling"
+  bakers = {
+    "baker001": {
+      public_baking_key="tz1xx",
+      slack_url="https://hooks.slack.com/services/xx",
+      slack_channel="#general",
+
+    }
 }
 ```
 
