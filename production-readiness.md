@@ -176,6 +176,9 @@ terraform {
   }
 }
 
+data "google_client_config" "current" {
+}
+
 module "terraform-gke-blockchain" {
   source                                = "github.com/midl-dev/terraform-gke-blockchain?ref=v1.0"
   org_id                                = "<my org id, defined above>"
@@ -236,7 +239,6 @@ module "tezos-baker" {
 module "tezos-mainnet-monitoring" {
   source                          = "github.com/midl-dev/tezos-auxiliary-cluster?ref=v2.0//terraform-no-cluster-create"
   region                          = module.terraform-gke-blockchain.location
-  node_locations                  = module.terraform-gke-blockchain.node_locations
   kubernetes_endpoint             = module.terraform-gke-blockchain.kubernetes_endpoint
   cluster_ca_certificate          = module.terraform-gke-blockchain.cluster_ca_certificate
   cluster_name                    = module.terraform-gke-blockchain.name
@@ -245,17 +247,18 @@ module "tezos-mainnet-monitoring" {
   kubernetes_pool_name            = "monitoring_pool"
   kubernetes_namespace            = "tezos"
   kubernetes_name_prefix          = "xtz"
-  tezos_private_version           = "v9.2"
+  tezos_network                   = "mainnet" 
+  tezos_version                   = "v9.2"
   protocol                        = "009-PsFLoren"
   protocol_short                  = "PsFLoren"
   rolling_snapshot_url            = "https://mainnet.xtz-shots.io/rolling"
   bakers = {
     "baker001": {
-      public_baking_key="tz1xx",
-      slack_url="https://hooks.slack.com/services/xx",
+      public_baking_key="tz1xxxx",
+      slack_url="https://hooks.slack.com/services/xxxxx",
       slack_channel="#general",
-
     }
+  }
 }
 ```
 
