@@ -1,0 +1,484 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Production hardening &mdash; MIDL.dev Tezos Suite  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Monitoring and alerting" href="monitoring-alerting.html" />
+    <link rel="prev" title="Deploy a public node" href="deploy-public-node.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MIDL.dev Tezos Suite
+          
+
+          
+            
+            <img src="_static/midl-dev-notext.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cloud-architecture.html">Cloud Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-signer-architecture.html">Remote Signer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_baker.html">Initial baker setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-remote-signer.html">Configure remote signer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_remote_signer.html">Remote signer setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external-monitoring.html">External monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trd-payouts.html">TRD Payouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-public-node.html">Deploy public node only</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Production readiness</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#terraform-service-account">Terraform service account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#separate-cluster-definition-from-baker-definition">Separate cluster definition from baker definition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#define-the-cluster">Define the cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#define-the-tezos-baker">Define the tezos baker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#with-remote-signer">With remote signer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#with-payout-config">With payout config</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#terraform-remote-state">Terraform remote state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#putting-it-all-together">Putting it all together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#going-further">Going further</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-alerting.html">Monitoring and alerting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="day-2-operations.html">Day 2 operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="active-standby.html">Active standby baker (experimental)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MIDL.dev Tezos Suite</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Production hardening</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/production-readiness.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="production-hardening">
+<h1>Production hardening<a class="headerlink" href="#production-hardening" title="Permalink to this headline">¶</a></h1>
+<p>While the tezos-on-gke project lets you quickly deploy a cluster with a running baker setup, running a production baker requires careful planning and execution.</p>
+<div class="section" id="terraform-service-account">
+<h2>Terraform service account<a class="headerlink" href="#terraform-service-account" title="Permalink to this headline">¶</a></h2>
+<p>Usage of <a class="reference external" href="https://cloud.google.com/docs/authentication/production">Google Default Application Credentials</a> is not recommended in a production environment.</p>
+<p>Instead:</p>
+<ul class="simple">
+<li>ensure that you have set up an Organization - that can be done by registering a domain name and adding it to gcloud</li>
+<li>create a Terraform Admin Project, Terraform Service Account and Service Account Credentials following <a class="reference external" href="https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform">this Google guide</a></li>
+<li>do not pass <code class="docutils literal notranslate"><span class="pre">project</span></code> as a variable when deploying the resources. Instead, pass <code class="docutils literal notranslate"><span class="pre">organization_id</span></code> and <code class="docutils literal notranslate"><span class="pre">billing_account</span></code> as variables</li>
+<li>pass the service account credentials json file <code class="docutils literal notranslate"><span class="pre">serviceAccount:terraform&#64;${TF_ADMIN}.iam.gserviceaccount.com</span></code> as <code class="docutils literal notranslate"><span class="pre">terraform_service_account_credentials</span></code> terraform variable</li>
+</ul>
+<p>That will create the cluster in a new project, created by the terraform service account.</p>
+<p>You may then grant people in your organization access to the project. It is recommended to write more terraform manifests to do so.</p>
+</div>
+<div class="section" id="separate-cluster-definition-from-baker-definition">
+<h2>Separate cluster definition from baker definition<a class="headerlink" href="#separate-cluster-definition-from-baker-definition" title="Permalink to this headline">¶</a></h2>
+<p>While you can create a baker in one-shot, it is best suited for demos and testnets. A production baker is best advised to be defined declaratively.</p>
+<p>You would normally write all the parameters defining your baker in a <code class="docutils literal notranslate"><span class="pre">terraform.tfvars</span></code> file in your laptop.</p>
+<p>Instead, it is recommended to create a maintain a private terraform manifest, declaring a cluster, and every deployment that lives within. This way, the paramters defining your cluster can also be committed to git (except secrets which should be handled separately, more on this below).</p>
+<p>This keeps the setup maintainable by letting you define several deployments within the same cluster. For example, you may deploy the Tezos baker setup, and the Tezos monitoring setup, within the same cluster.</p>
+<div class="section" id="define-the-cluster">
+<h3>Define the cluster<a class="headerlink" href="#define-the-cluster" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://github.com/midl-dev/terraform-gke-blockchain">terraform-gke-blockchain</a> repository contains boilerplate terraform code to deploy a kubernetes cluster.</p>
+<p>Start by declaring one empty cluster and one terraform provider:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="s2">&quot;terraform-gke-blockchain&quot;</span> <span class="p">{</span>
+  <span class="n">source</span>                                <span class="o">=</span> <span class="s2">&quot;github.com/midl-dev/terraform-gke-blockchain?ref=v2.0&quot;</span>
+  <span class="n">org_id</span>                                <span class="o">=</span> <span class="s2">&quot;&lt;my org id, defined above&gt;&quot;</span>
+  <span class="n">billing_account</span>                       <span class="o">=</span> <span class="s2">&quot;&lt;my billing account, defined above&gt;&quot;</span>
+  <span class="n">project_prefix</span>                        <span class="o">=</span> <span class="s2">&quot;mybakingop&quot;</span>
+  <span class="n">monitoring_slack_url</span>                  <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">monitoring_slack_url</span>
+  <span class="n">terraform_service_account_credentials</span> <span class="o">=</span> <span class="s2">&quot;~/.config/gcloud/terraform-service-account-credentials.json&quot;</span>
+  <span class="n">node_pools</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;baking_pool&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;node_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;instance_type&quot;</span><span class="p">:</span> <span class="s2">&quot;e2-standard-2&quot;</span> <span class="p">},</span>
+    <span class="s2">&quot;monitoring_pool&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;node_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;instance_type&quot;</span><span class="p">:</span> <span class="s2">&quot;e2-standard-1&quot;</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># This file contains all the interactions with Kubernetes</span>
+<span class="n">provider</span> <span class="s2">&quot;kubernetes&quot;</span> <span class="p">{</span>
+  <span class="n">host</span>             <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">kubernetes_endpoint</span>
+  <span class="n">cluster_ca_certificate</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">cluster_ca_certificate</span>
+  <span class="n">token</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">google_client_config</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">access_token</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notice that we created two node pools. These are distinct virtual machines that run your kubernetes cluster. You can map your pods to either. We will be using these to separate the baker setup from the payout/monitoring setup.</p>
+</div>
+<div class="section" id="define-the-tezos-baker">
+<h3>Define the tezos baker<a class="headerlink" href="#define-the-tezos-baker" title="Permalink to this headline">¶</a></h3>
+<p>Within the <code class="docutils literal notranslate"><span class="pre">tezos-on-gke</span></code> repository, the <code class="docutils literal notranslate"><span class="pre">terraform-no-cluster-create</span></code> folder will deploy the baker on a pre-existing cluster.</p>
+<p>The output parameters of the <code class="docutils literal notranslate"><span class="pre">terraform-gke-blockchain</span></code> module become the input parameters of the Tezos baker module.</p>
+<p>All variables will appear in the terraform manifest itself, except secrets. Secrets should be kept as variables, and handled appropriately.</p>
+<p>It looks like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="s2">&quot;tezos-baker&quot;</span> <span class="p">{</span>
+  <span class="n">source</span>                          <span class="o">=</span> <span class="s2">&quot;github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create&quot;</span>
+  <span class="n">region</span>                          <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">location</span>
+  <span class="n">node_locations</span>                  <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">node_locations</span>
+  <span class="n">kubernetes_endpoint</span>             <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">kubernetes_endpoint</span>
+  <span class="n">cluster_ca_certificate</span>          <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">cluster_ca_certificate</span>
+  <span class="n">cluster_name</span>                    <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">name</span>
+  <span class="n">kubernetes_access_token</span>         <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">google_client_config</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">access_token</span>
+  <span class="n">kubernetes_pool_name</span>            <span class="o">=</span> <span class="s2">&quot;baking_pool&quot;</span>
+  <span class="n">project</span>                         <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">project</span>
+  <span class="n">full_snapshot_url</span>               <span class="o">=</span> <span class="s2">&quot;https://mainnet.xtz-shots.io/full&quot;</span>
+  <span class="n">rolling_snapshot_url</span>            <span class="o">=</span> <span class="s2">&quot;https://mainnet.xtz-shots.io/rolling&quot;</span>
+  <span class="n">kubernetes_namespace</span>            <span class="o">=</span> <span class="s2">&quot;tezos&quot;</span>
+  <span class="n">kubernetes_name_prefix</span>          <span class="o">=</span> <span class="s2">&quot;xtz&quot;</span>
+  <span class="n">tezos_version</span>                   <span class="o">=</span> <span class="s2">&quot;v9.2&quot;</span>
+  <span class="n">tezos_network</span>                   <span class="o">=</span> <span class="s2">&quot;mainnet&quot;</span>
+  <span class="n">baking_nodes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;mybaker&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;mynode&quot;</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;public_baking_key_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;public_baking_key&quot;</span><span class="p">:</span> <span class="s2">&quot;edpk...&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;insecure_private_baking_key&quot;</span><span class="p">:</span> <span class="s2">&quot;edsk3cftTNcJnxb7ehCxYeCaKPT7mjycdMxgFisLixrQ9bZuTG2yZK&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="with-remote-signer">
+<h3>With remote signer<a class="headerlink" href="#with-remote-signer" title="Permalink to this headline">¶</a></h3>
+<p>It is recommended to use a remote signer for secure operations.</p>
+<p>Below is an example of baker with remote signer configured:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="s2">&quot;tezos-baker&quot;</span> <span class="p">{</span>
+  <span class="n">source</span>                          <span class="o">=</span> <span class="s2">&quot;github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create&quot;</span>
+  <span class="n">region</span>                          <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">location</span>
+  <span class="n">node_locations</span>                  <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">node_locations</span>
+  <span class="n">kubernetes_endpoint</span>             <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">kubernetes_endpoint</span>
+  <span class="n">cluster_ca_certificate</span>          <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">cluster_ca_certificate</span>
+  <span class="n">cluster_name</span>                    <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">name</span>
+  <span class="n">kubernetes_access_token</span>         <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">google_client_config</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">access_token</span>
+  <span class="n">kubernetes_pool_name</span>            <span class="o">=</span> <span class="s2">&quot;baking_pool&quot;</span>
+  <span class="n">project</span>                         <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">project</span>
+  <span class="n">full_snapshot_url</span>               <span class="o">=</span> <span class="s2">&quot;https://mainnet.xtz-shots.io/full&quot;</span>
+  <span class="n">rolling_snapshot_url</span>            <span class="o">=</span> <span class="s2">&quot;https://mainnet.xtz-shots.io/rolling&quot;</span>
+  <span class="n">kubernetes_namespace</span>            <span class="o">=</span> <span class="s2">&quot;tezos&quot;</span>
+  <span class="n">kubernetes_name_prefix</span>          <span class="o">=</span> <span class="s2">&quot;xtz&quot;</span>
+  <span class="n">tezos_version</span>                   <span class="o">=</span> <span class="s2">&quot;v9.2&quot;</span>
+  <span class="n">tezos_network</span>                   <span class="o">=</span> <span class="s2">&quot;mainnet&quot;</span>
+  <span class="n">signer_target_host_key</span><span class="o">=</span><span class="n">var</span><span class="o">.</span><span class="n">signer_target_host_key</span>
+  <span class="n">baking_nodes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;mybaker&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;mynode&quot;</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;public_baking_key_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;public_baking_key&quot;</span><span class="p">:</span> <span class="s2">&quot;edpk...&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ledger_authorized_path&quot;</span><span class="p">:</span> <span class="s2">&quot;ledger://my-four-key-words/ed25519/0h/1h&quot;</span><span class="p">,</span>
+        <span class="n">authorized_signers</span> <span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span> <span class="s2">&quot;ssh_pubkey&quot;</span> <span class="p">:</span> <span class="s2">&quot;ssh-rsa AAAAB&lt;snip&gt;==&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;signer_port&quot;</span> <span class="p">:</span> <span class="mi">8443</span><span class="p">,</span>
+                  <span class="s2">&quot;tunnel_endpoint_port&quot;</span> <span class="p">:</span> <span class="mi">51756</span> <span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="with-payout-config">
+<h3>With payout config<a class="headerlink" href="#with-payout-config" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">baking_nodes</span></code> section also accepts a config for TRD payouts. See the <a class="reference internal" href="trd-payouts.html"><span class="doc">TRD payouts</span></a> section for details.</p>
+</div>
+</div>
+<div class="section" id="terraform-remote-state">
+<h2>Terraform remote state<a class="headerlink" href="#terraform-remote-state" title="Permalink to this headline">¶</a></h2>
+<p>Terraform normally maintains state locally. Accidental loss of this file will cause your setup to be unmaintainable. Therefore, it is good practice to store the state in a remote Storage Bucket.</p>
+<p>The best location for this storage bucket is the Terraform Admin project created above.</p>
+<p>In the private terraform file, add the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">terraform</span> <span class="p">{</span>
+  <span class="n">backend</span> <span class="s2">&quot;gcs&quot;</span> <span class="p">{</span>
+    <span class="n">bucket</span>  <span class="o">=</span> <span class="s2">&quot;terraform-state-midl-prod&quot;</span>
+    <span class="n">prefix</span>  <span class="o">=</span> <span class="s2">&quot;terraform/state&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The state will now be stored remotely.</p>
+<p>More info in the <a class="reference external" href="https://www.terraform.io/docs/backends/types/gcs.html">Terraform documentation</a>.</p>
+</div>
+<div class="section" id="putting-it-all-together">
+<h2>Putting it all together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h2>
+<p>This terraform manifest deploys a full Tezos baker.</p>
+<p>It creates a cluster with two node pools: one for the baker and one for the remaining containers.</p>
+<p>It deploys a baker and an auxiliary cluster handling the payouts, external monitoring and website.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">terraform</span> <span class="p">{</span>
+  <span class="n">backend</span> <span class="s2">&quot;gcs&quot;</span> <span class="p">{</span>
+    <span class="n">bucket</span>  <span class="o">=</span> <span class="s2">&quot;terraform-state-midl-prod&quot;</span>
+    <span class="n">prefix</span>  <span class="o">=</span> <span class="s2">&quot;terraform/state&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">data</span> <span class="s2">&quot;google_client_config&quot;</span> <span class="s2">&quot;current&quot;</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">module</span> <span class="s2">&quot;terraform-gke-blockchain&quot;</span> <span class="p">{</span>
+  <span class="n">source</span>                                <span class="o">=</span> <span class="s2">&quot;github.com/midl-dev/terraform-gke-blockchain?ref=v1.0&quot;</span>
+  <span class="n">org_id</span>                                <span class="o">=</span> <span class="s2">&quot;&lt;my org id, defined above&gt;&quot;</span>
+  <span class="n">billing_account</span>                       <span class="o">=</span> <span class="s2">&quot;&lt;my billing account, defined above&gt;&quot;</span>
+  <span class="n">project_prefix</span>                        <span class="o">=</span> <span class="s2">&quot;mybakingop&quot;</span>
+  <span class="n">monitoring_slack_url</span>                  <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">monitoring_slack_url</span>
+  <span class="n">terraform_service_account_credentials</span> <span class="o">=</span> <span class="s2">&quot;~/.config/gcloud/terraform-service-account-credentials.json&quot;</span>
+  <span class="n">node_pools</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;baking_pool&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;node_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;instance_type&quot;</span><span class="p">:</span> <span class="s2">&quot;e2-standard-2&quot;</span> <span class="p">},</span>
+    <span class="s2">&quot;monitoring_pool&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;node_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;instance_type&quot;</span><span class="p">:</span> <span class="s2">&quot;e2-standard-1&quot;</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">module</span> <span class="s2">&quot;tezos-baker&quot;</span> <span class="p">{</span>
+  <span class="n">source</span>                          <span class="o">=</span> <span class="s2">&quot;github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create&quot;</span>
+  <span class="n">region</span>                          <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">location</span>
+  <span class="n">node_locations</span>                  <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">node_locations</span>
+  <span class="n">kubernetes_endpoint</span>             <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">kubernetes_endpoint</span>
+  <span class="n">cluster_ca_certificate</span>          <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">cluster_ca_certificate</span>
+  <span class="n">cluster_name</span>                    <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">name</span>
+  <span class="n">kubernetes_access_token</span>         <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">google_client_config</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">access_token</span>
+  <span class="n">project</span>                         <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">project</span>
+  <span class="n">kubernetes_pool_name</span>            <span class="o">=</span> <span class="s2">&quot;baking_pool&quot;</span>
+  <span class="n">kubernetes_namespace</span>            <span class="o">=</span> <span class="s2">&quot;tezos&quot;</span>
+  <span class="n">kubernetes_name_prefix</span>          <span class="o">=</span> <span class="s2">&quot;xtz&quot;</span>
+  <span class="n">full_snapshot_url</span>               <span class="o">=</span> <span class="s2">&quot;https://mainnet.xtz-shots.io/full&quot;</span>
+  <span class="n">rolling_snapshot_url</span>            <span class="o">=</span> <span class="s2">&quot;https://mainnet.xtz-shots.io/rolling&quot;</span>
+  <span class="n">kubernetes_namespace</span>            <span class="o">=</span> <span class="s2">&quot;tezos&quot;</span>
+  <span class="n">tezos_version</span>                   <span class="o">=</span> <span class="s2">&quot;v9.2&quot;</span>
+  <span class="n">tezos_network</span>                   <span class="o">=</span> <span class="s2">&quot;mainnet&quot;</span>
+  <span class="n">signer_target_host_key</span><span class="o">=</span><span class="n">var</span><span class="o">.</span><span class="n">signer_target_host_key</span>
+  <span class="n">baking_nodes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;mynode&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;mybaker&quot;</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;public_baking_key_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;public_baking_key&quot;</span><span class="p">:</span> <span class="s2">&quot;edpk...&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ledger_authorized_path&quot;</span><span class="p">:</span> <span class="s2">&quot;ledger://my-four-key-words/ed25519/0h/1h&quot;</span><span class="p">,</span>
+        <span class="n">authorized_signers</span> <span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span> <span class="s2">&quot;ssh_pubkey&quot;</span> <span class="p">:</span> <span class="s2">&quot;ssh-rsa AAAAB&lt;snip&gt;==&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;signer_port&quot;</span> <span class="p">:</span> <span class="mi">8443</span><span class="p">,</span>
+                  <span class="s2">&quot;tunnel_endpoint_port&quot;</span> <span class="p">:</span> <span class="mi">51756</span> <span class="p">}</span>
+        <span class="p">]</span>
+        <span class="s2">&quot;payout_config&quot;</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="s2">&quot;schedule&quot;</span><span class="o">=</span><span class="s2">&quot;06 */3 * * *&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;initial_cycle&quot;</span><span class="p">:</span> <span class="mi">370</span><span class="p">,</span>
+          <span class="s2">&quot;release_override&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+          <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="s2">&quot;MAINNET&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;reward_data_provider&quot;</span><span class="p">:</span> <span class="s2">&quot;tzkt&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;dry_run&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;payment_address&quot;</span><span class="p">:</span> <span class="s2">&quot;tz1&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;rewards_type&quot;</span><span class="p">:</span> <span class="s2">&quot;actual&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;service_fee&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="s2">&quot;rules_map&quot;</span><span class="p">:</span> <span class="p">{}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">module</span> <span class="s2">&quot;tezos-mainnet-monitoring&quot;</span> <span class="p">{</span>
+  <span class="n">source</span>                          <span class="o">=</span> <span class="s2">&quot;github.com/midl-dev/tezos-auxiliary-cluster?ref=v2.0//terraform-no-cluster-create&quot;</span>
+  <span class="n">region</span>                          <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">location</span>
+  <span class="n">kubernetes_endpoint</span>             <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">kubernetes_endpoint</span>
+  <span class="n">cluster_ca_certificate</span>          <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">cluster_ca_certificate</span>
+  <span class="n">cluster_name</span>                    <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">name</span>
+  <span class="n">kubernetes_access_token</span>         <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">google_client_config</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">access_token</span>
+  <span class="n">project</span>                         <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">terraform</span><span class="o">-</span><span class="n">gke</span><span class="o">-</span><span class="n">blockchain</span><span class="o">.</span><span class="n">project</span>
+  <span class="n">kubernetes_pool_name</span>            <span class="o">=</span> <span class="s2">&quot;monitoring_pool&quot;</span>
+  <span class="n">kubernetes_namespace</span>            <span class="o">=</span> <span class="s2">&quot;tezos&quot;</span>
+  <span class="n">kubernetes_name_prefix</span>          <span class="o">=</span> <span class="s2">&quot;xtz&quot;</span>
+  <span class="n">tezos_network</span>                   <span class="o">=</span> <span class="s2">&quot;mainnet&quot;</span> 
+  <span class="n">tezos_version</span>                   <span class="o">=</span> <span class="s2">&quot;v9.2&quot;</span>
+  <span class="n">protocol</span>                        <span class="o">=</span> <span class="s2">&quot;009-PsFLoren&quot;</span>
+  <span class="n">protocol_short</span>                  <span class="o">=</span> <span class="s2">&quot;PsFLoren&quot;</span>
+  <span class="n">rolling_snapshot_url</span>            <span class="o">=</span> <span class="s2">&quot;https://mainnet.xtz-shots.io/rolling&quot;</span>
+  <span class="n">bakers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;baker001&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="n">public_baking_key</span><span class="o">=</span><span class="s2">&quot;tz1xxxx&quot;</span><span class="p">,</span>
+      <span class="n">slack_url</span><span class="o">=</span><span class="s2">&quot;https://hooks.slack.com/services/xxxxx&quot;</span><span class="p">,</span>
+      <span class="n">slack_channel</span><span class="o">=</span><span class="s2">&quot;#general&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that all values above are not secrets, it is fine to commit them in a private repository. The secrets are passed with variables and must be handled separately.</p>
+</div>
+<div class="section" id="going-further">
+<h2>Going further<a class="headerlink" href="#going-further" title="Permalink to this headline">¶</a></h2>
+<p>A production validator should be operated with an on-call rotation, meaning several operators have access to the setup.</p>
+<p>Specifically:</p>
+<ul class="simple">
+<li>secrets should be moved from a file in the operator workspace to a production secret store such as <a class="reference external" href="vaultproject.io">Hashicorp Vault</a></li>
+<li>terraform deploys should be done by a CI system</li>
+<li>any manual change in the kubernetes environment should be recorded in an audit log and committed in the code:<ul>
+<li>the terraform private file above can be applied with continuous integration</li>
+<li>the intermediate kubernetes code generated with kustomize could be stored in a CI pipeline and deployed in an auditable way as well (see <a class="reference external" href="https://www.weave.works/technologies/gitops/">Gitops</a>).</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="monitoring-alerting.html" class="btn btn-neutral float-right" title="Monitoring and alerting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="deploy-public-node.html" class="btn btn-neutral float-left" title="Deploy a public node" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, MIDL.dev
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

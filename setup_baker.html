@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Initial baker setup &mdash; MIDL.dev Tezos Suite  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deploy a baker with remote signer" href="deploy-remote-signer.html" />
+    <link rel="prev" title="Remote signer architecture" href="remote-signer-architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MIDL.dev Tezos Suite
+          
+
+          
+            
+            <img src="_static/midl-dev-notext.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cloud-architecture.html">Cloud Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-signer-architecture.html">Remote Signer Architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Initial baker setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-ledgers">Setting up Ledgers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-the-ledger-mnemonic">Get the Ledger mnemonic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choose-a-derivation-path">Choose a derivation path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-incoming-and-outgoing-transfers">Test incoming and outgoing transfers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transfer-funds">Transfer funds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-ledger-to-bake">Setup Ledger to bake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#register-as-delegate">Register as delegate</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-remote-signer.html">Configure remote signer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_remote_signer.html">Remote signer setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external-monitoring.html">External monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trd-payouts.html">TRD Payouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-public-node.html">Deploy public node only</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-readiness.html">Production readiness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-alerting.html">Monitoring and alerting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="day-2-operations.html">Day 2 operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="active-standby.html">Active standby baker (experimental)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MIDL.dev Tezos Suite</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Initial baker setup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/setup_baker.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="initial-baker-setup">
+<h1>Initial baker setup<a class="headerlink" href="#initial-baker-setup" title="Permalink to this headline">¶</a></h1>
+<p>Prerequisites for secure baking are two Ledger Nano S:</p>
+<ul class="simple">
+<li>one that is active all the time, signing baking and endorsing operations</li>
+<li>one used for occasionally transfering funds and voting for protocol amendments, otherwise remaining offline</li>
+</ul>
+<p>These Ledgers should be used exclusively for Tezos baking. Do not install other apps, and transfer any other cryptocurrency onto them.</p>
+<div class="section" id="setting-up-ledgers">
+<h2>Setting up Ledgers<a class="headerlink" href="#setting-up-ledgers" title="Permalink to this headline">¶</a></h2>
+<p>Upgrade both Ledgers with the most recent firmware available.</p>
+<p>Initialize the first Ledger with a new key. Write down the secret seed as prescribed by the documentation. Do not take a picture of it, keep it offline.</p>
+<p>On the first Ledger, install the tezos baker app. Do not install any other app.</p>
+<p>Initialize the second Ledger with the secret seed that you wrote down from the first Ledger.</p>
+<p>The second Ledger is now a clone of the first. It contains the same keys.</p>
+<p>On the second Ledger, install the tezos app. Do not install any other app.</p>
+<p>Label Ledgers, ideally with printed labels (“My Tezos Baker Signer” / “My Tezos Baker Offline”)</p>
+<p>NOTE: you may set up the second Ledger later, as it is not necessary to kick off the baking operations</p>
+</div>
+<div class="section" id="get-the-ledger-mnemonic">
+<h2>Get the Ledger mnemonic<a class="headerlink" href="#get-the-ledger-mnemonic" title="Permalink to this headline">¶</a></h2>
+<p>To follow the instructions below, you will need to install the Tezos Command Line Interface. <a class="reference external" href="https://tezos.gitlab.io/introduction/howtoget.html">Follow instructions from Tezos documentation</a>.</p>
+<p>The simplest way is to install the Docker containers then run the client in <a class="reference external" href="https://tezos.stackexchange.com/questions/395/has-anyone-got-ledger-working-within-docker">privileged mode with USB volume mounted</a>.</p>
+<p>All commands within the container must be prepended with <code class="docutils literal notranslate"><span class="pre">sudo</span></code>.</p>
+<p>Note that it is not needed to synchronize the blockchain.</p>
+<p>Launch the container in privileged mode with USB bus mounted, and open a terminal in it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">entrypoint</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">--</span><span class="n">privileged</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">bus</span><span class="o">/</span><span class="n">usb</span><span class="p">:</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">bus</span><span class="o">/</span><span class="n">usb</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">my</span><span class="o">-</span><span class="n">tezos</span><span class="o">-</span><span class="n">client</span> <span class="n">tezos</span><span class="o">/</span><span class="n">tezos</span><span class="p">:</span><span class="n">latest</span><span class="o">-</span><span class="n">release</span>
+</pre></div>
+</div>
+<p>Then issue the command <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">tezos-client</span> <span class="pre">list</span> <span class="pre">connected</span> <span class="pre">ledgers</span></code>.</p>
+<p>The Ledger URL including the four-animal-word mnemonic will be displayed, together with commands inviting you to import the key.</p>
+<p>There are several cryptographic schemes to choose from. We will be using <code class="docutils literal notranslate"><span class="pre">ed25519</span></code>.</p>
+</div>
+<div class="section" id="choose-a-derivation-path">
+<h2>Choose a derivation path<a class="headerlink" href="#choose-a-derivation-path" title="Permalink to this headline">¶</a></h2>
+<p>Ledger has the concept of derivation path - instead of just one address, the device stores multiple addresses. They are related to them by a derivation path, but they are undistinguishable by looking at the public key.</p>
+<p>For example, the root path is <code class="docutils literal notranslate"><span class="pre">/0'/0'</span></code>, and the first child path is <code class="docutils literal notranslate"><span class="pre">/0'/1'</span></code>.</p>
+<p>It is considered good practice to always use a derived path instead of the root path.</p>
+<p>Import the key into your client:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">tezos</span><span class="o">-</span><span class="n">client</span> <span class="kn">import</span> <span class="nn">secret</span> <span class="n">key</span> <span class="n">ledger_root</span> <span class="s2">&quot;ledger://&lt;mnemonic&gt;/ed25519/0&#39;/1&#39;&quot;</span>
+</pre></div>
+</div>
+<p>Then read the public key hash associated with this Leger key and path:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">tezos</span><span class="o">-</span><span class="n">client</span> <span class="nb">list</span> <span class="n">known</span> <span class="n">addresses</span>
+</pre></div>
+</div>
+<p>Write down the Ledger URL and the baker’s public key hash as they are necessary to spin up the cloud baker.</p>
+</div>
+<div class="section" id="test-incoming-and-outgoing-transfers">
+<h2>Test incoming and outgoing transfers<a class="headerlink" href="#test-incoming-and-outgoing-transfers" title="Permalink to this headline">¶</a></h2>
+<p>First, it is recommended to send a small amount of XTZ in the Ledger address, then out again, to verify that the funds are indeed accessible.</p>
+<p>Transfer XTZ (from an exchange or any other source) to the address discovered above.</p>
+<p>Then, with CLI, do an outbound transfer to an outbound address that you control (such as an address for incoming transfer on an exchange). For example, to transfer 1 XTZ, issue the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">tezos</span><span class="o">-</span><span class="n">client</span> <span class="o">--</span><span class="n">endpoint</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">mainnet</span><span class="o">-</span><span class="n">tezos</span><span class="o">.</span><span class="n">giganode</span><span class="o">.</span><span class="n">io</span> <span class="n">transfer</span> <span class="mi">1</span> <span class="kn">from</span> <span class="nn">ledger_root</span> <span class="n">to</span> <span class="o">&lt;</span><span class="n">outbound</span> <span class="n">address</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Since this is an on-chain operation, we pass the parameters <code class="docutils literal notranslate"><span class="pre">--endpoint</span> <span class="pre">https://mainnet-tezos.giganode.io</span></code> to connect to a <a class="reference external" href="https://tezos.giganode.io/">publicly accessible Tezos node</a>. If you have a fully synced node running locally, you can omit these parameters.</p>
+<p>The Ledger should prompt you to confirm. Pay close attention to what is displayed on the Ledger screen, verify that it does what you want it to do.</p>
+</div>
+<div class="section" id="transfer-funds">
+<h2>Transfer funds<a class="headerlink" href="#transfer-funds" title="Permalink to this headline">¶</a></h2>
+<p>After verifying that you are able to transfer in and out of your baking address, transfer enough funds (at least one roll of XTZ) to start baking.</p>
+</div>
+<div class="section" id="setup-ledger-to-bake">
+<h2>Setup Ledger to bake<a class="headerlink" href="#setup-ledger-to-bake" title="Permalink to this headline">¶</a></h2>
+<p>On the Ledger used for baking, launch the baking app and connect it to your computer after disconnecting the other Ledger used for transfers.</p>
+<p>Then issue the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">tezos</span><span class="o">-</span><span class="n">signer</span> <span class="n">setup</span> <span class="n">ledger</span> <span class="n">to</span> <span class="n">bake</span> <span class="k">for</span> <span class="o">&lt;</span><span class="n">ledger_url</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">main</span><span class="o">-</span><span class="n">chain</span><span class="o">-</span><span class="nb">id</span> <span class="n">NetXdQprcVkpaWU</span>
+</pre></div>
+</div>
+<p>The Ledger should prompt you to confirm. It will display the baker address and the chain ID. Verify that it corresponds to your baker address.</p>
+<p>Note: <code class="docutils literal notranslate"><span class="pre">NetXdQprcVkpaWU</span></code> is the chain id for Tezos mainnet. For a testnet deployment, change it to the relevant chain-id.</p>
+</div>
+<div class="section" id="register-as-delegate">
+<h2>Register as delegate<a class="headerlink" href="#register-as-delegate" title="Permalink to this headline">¶</a></h2>
+<p>To start baking, you must sign an on-chain operation indicating the network that you register to get baking and endorsing slots.</p>
+<p>When you register, there is a grace period of two full cycles. Then, you get assigned baking and endorsing slots for five cycles in the future. It means that there is approximately a 21 day gap between the moment you register as delegate and your first on-chain validation operation. Hence it is required to perform this operation well in advance of the planned launch date of the baker.</p>
+<p>With the Ledger used for baking still connected, issue the following operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">tezos</span><span class="o">-</span><span class="n">client</span> <span class="o">--</span><span class="n">endpoint</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">mainnet</span><span class="o">-</span><span class="n">tezos</span><span class="o">.</span><span class="n">giganode</span><span class="o">.</span><span class="n">io</span> <span class="n">register</span> <span class="n">key</span> <span class="o">&lt;</span><span class="n">baking</span> <span class="n">address</span><span class="o">&gt;</span> <span class="k">as</span> <span class="n">delegate</span>
+</pre></div>
+</div>
+<p>Again, this is an on-chain operation, so you either need to connect to a public node (like above) or have a fully synced node running locally.</p>
+<p>The Ledger should prompt you to confirm. Pay close attention to what is displayed on the Ledger screen, verify that it does what you want it to do.</p>
+<p>Verify on an explorer such as tzstats that your address is indeed registered as a baker.</p>
+<p><a class="reference external" href="https://tezos.gitlab.io/introduction/howtorun.html#register-and-check-your-rights">See Tezos official documentation for more details</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="deploy-remote-signer.html" class="btn btn-neutral float-right" title="Deploy a baker with remote signer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="remote-signer-architecture.html" class="btn btn-neutral float-left" title="Remote signer architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, MIDL.dev
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

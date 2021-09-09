@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Deploy a baker with remote signer &mdash; MIDL.dev Tezos Suite  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setup remote signer" href="setup_remote_signer.html" />
+    <link rel="prev" title="Initial baker setup" href="setup_baker.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MIDL.dev Tezos Suite
+          
+
+          
+            
+            <img src="_static/midl-dev-notext.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cloud-architecture.html">Cloud Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-signer-architecture.html">Remote Signer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_baker.html">Initial baker setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configure remote signer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#instructions">Instructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ssh-endpoint-host-key">ssh endpoint host key</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-the-tunneling-endpoint-ip-address">Get the tunneling endpoint IP address</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configure-the-remote-signer">Configure the remote signer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configure-the-endpoint">Configure the endpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-the-endpoint">Test the endpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remote-signer-monitoring">Remote signer monitoring</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="setup_remote_signer.html">Remote signer setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external-monitoring.html">External monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trd-payouts.html">TRD Payouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-public-node.html">Deploy public node only</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-readiness.html">Production readiness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-alerting.html">Monitoring and alerting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="day-2-operations.html">Day 2 operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="active-standby.html">Active standby baker (experimental)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MIDL.dev Tezos Suite</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Deploy a baker with remote signer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/deploy-remote-signer.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="deploy-a-baker-with-remote-signer">
+<h1>Deploy a baker with remote signer<a class="headerlink" href="#deploy-a-baker-with-remote-signer" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference external" href="#">quickstart</a> indicates how to set up a cloud baker with the private keys hosted in a Kubernetes secrets. In this section, we configure a remote signer on-premises. This configuration is more secure and every mainnet deployment should use it.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>You will need your baking public key and Ledger authorized path. <a class="reference internal" href="setup_baker.html"><span class="doc">Follow these instructions</span></a> to get them.</p>
+</div>
+<div class="section" id="instructions">
+<h2>Instructions<a class="headerlink" href="#instructions" title="Permalink to this headline">¶</a></h2>
+<p>First, deploy the Tezos-on-GKE baking setup in the cluster.</p>
+<p>You may deploy it from the tezos-on-gke repo itself using the <a class="reference external" href="https://github.com/midl-dev/tezos-on-gke">quickstart</a> instructions, however it is better to follow <a class="reference internal" href="production-readiness.html"><span class="doc">production best practices</span></a>.</p>
+<p>In these instructions, we will be declaring a <code class="docutils literal notranslate"><span class="pre">tezos-baker</span></code> terraform module, keeping all sensitive data in a <code class="docutils literal notranslate"><span class="pre">terraform.tfvars</span></code> file.</p>
+<p>First, on an empty project dir, create a new <code class="docutils literal notranslate"><span class="pre">main.tf</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="s2">&quot;tezos-baker&quot;</span> <span class="p">{</span>
+  <span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create&quot;</span>
+  <span class="n">baking_nodes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">mynode</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="n">mybaker</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">public_baking_key</span><span class="o">=</span><span class="s2">&quot;edpk...&quot;</span>
+        <span class="n">public_baking_key_hash</span><span class="o">=</span><span class="s2">&quot;tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU&quot;</span>
+        <span class="n">ledger_authorized_path</span><span class="o">=</span><span class="s2">&quot;ledger://my-four-key-words/ed25519/0h/1h&quot;</span><span class="p">,</span>
+        <span class="n">authorized_signers</span> <span class="p">:</span> <span class="p">[]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="n">signer_target_host_key</span><span class="o">=</span><span class="n">var</span><span class="o">.</span><span class="n">signer_target_host_key</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">authorized_signers</span></code> is empty for now.</p>
+<div class="section" id="ssh-endpoint-host-key">
+<h3>ssh endpoint host key<a class="headerlink" href="#ssh-endpoint-host-key" title="Permalink to this headline">¶</a></h3>
+<p>A ssh server normally generates its host keys during installation. Here, we are generating them externally and injecting them into the setup as a terraform and kubernetes secrets.</p>
+<p>This way, in case of complete destruction of the cluster, the operator is able to restore the ssh endpoint with the same host key.</p>
+<p>Combined with a static hostname (see explanation below), the remote signer will connect to a newly recovered cluster without noticing it has changed. If the host key changes, there will be a ssh warning preventing the remote signer from connecting.</p>
+<p>If you cannot directly ssh to the remote signer, setting the ssh host key means that it will automatically reconnect to the cluster, even if you destroy and reprovision it completely.</p>
+<p>To generate a RSA host key, issue the following command on any computer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">N</span> <span class="s2">&quot;&quot;</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span> <span class="o">-</span><span class="n">b</span> <span class="mi">4096</span> <span class="o">-</span><span class="n">f</span> <span class="n">tezos_tunnel_endpoint_host_rsa_key</span>
+</pre></div>
+</div>
+<p>This value is sensitive, so we will configure it as a terraform variable. In the terraform module, we are passing it as a variable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">signer_target_host_key</span><span class="o">=</span><span class="n">var</span><span class="o">.</span><span class="n">signer_target_host_key</span>
+</pre></div>
+</div>
+<p>In terraform.tfvars, use a heredoc to specify the key:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">signer_target_host_key</span> <span class="o">=</span> <span class="o">&lt;&lt;-</span><span class="n">EOK</span>
+<span class="o">-----</span><span class="n">BEGIN</span> <span class="n">OPENSSH</span> <span class="n">PRIVATE</span> <span class="n">KEY</span><span class="o">-----</span>
+<span class="o">&lt;</span><span class="n">the</span> <span class="n">key</span><span class="o">&gt;</span>
+<span class="o">-----</span><span class="n">END</span> <span class="n">OPENSSH</span> <span class="n">PRIVATE</span> <span class="n">KEY</span><span class="o">-----</span>
+<span class="n">EOK</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-the-tunneling-endpoint-ip-address">
+<h3>Get the tunneling endpoint IP address<a class="headerlink" href="#get-the-tunneling-endpoint-ip-address" title="Permalink to this headline">¶</a></h3>
+<p>Issue the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcloud</span> <span class="n">compute</span> <span class="n">addresses</span> <span class="nb">list</span> <span class="o">--</span><span class="n">project</span> <span class="o">&lt;</span><span class="n">project_name</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">tezos-baker-lb</span></code> address is the one that you will configure the remote signer to connect to.</p>
+<p>It is recommended to map this IP address to a fixed, randomly generated hostname. This way, the remote signer will always manage to connect to the ssh endpoint, even if the cluster gets completely regenerated and gets assigned a new IP. Otherwise, ssh will give a warning that the host key changed, or that the IP is unknown, and it will not automatically reconnect. This is a problem if you do not have another way of logging in to the remote signer.</p>
+</div>
+<div class="section" id="configure-the-remote-signer">
+<h3>Configure the remote signer<a class="headerlink" href="#configure-the-remote-signer" title="Permalink to this headline">¶</a></h3>
+<p>The remote signer installation is fully automated using Ansible. The <a class="reference external" href="https://github.com/midl-dev/tezos-remote-signer-os">README of the tezos-remote-signer-os-repo</a> has more detail on how to set it up.</p>
+<p>The remote signer needs two inputs to configure itself:</p>
+<ul class="simple">
+<li>the hostname for the ssh endpoint, to be configured in the <a class="reference external" href="https://github.com/midl-dev/tezos-remote-signer-os/blob/master/tezos-remote-signer.yaml">tezos-remote-signer</a> manifest</li>
+<li>the port where the signer endpoint will be forwarded on the cloud. You can pick any port, but it must be globally unique across your deployment if you have several remote signers.</li>
+</ul>
+<p>Once complete, you must create a RSA key pair in the signer. ssh to it as <code class="docutils literal notranslate"><span class="pre">tezos</span></code> user, then issue the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span>
+</pre></div>
+</div>
+<p>Then, take note of the RSA public key:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">tezos</span><span class="o">/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="o">.</span><span class="n">pub</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-the-endpoint">
+<h3>Configure the endpoint<a class="headerlink" href="#configure-the-endpoint" title="Permalink to this headline">¶</a></h3>
+<p>You may now declare this remote signer in the terraform parameter <code class="docutils literal notranslate"><span class="pre">baking_nodes</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">authorized_signers</span></code> list takes signer maps consisting of the following key/value pairs:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ssh_pubkey</span></code>: the public key of the signer, generated at the previous step</li>
+<li><code class="docutils literal notranslate"><span class="pre">signer_port</span></code>: the port on the remote signer that is being forwarded to the cluster. This can be identical across signers, we recommend to leave it at the default value of 8443.</li>
+<li><code class="docutils literal notranslate"><span class="pre">tunnel_endpoint_port</span></code>: the port on the load balancer IP address that the ssh forwarder on the signer connects to. This must be unique to the signer.</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="s2">&quot;tezos-baker&quot;</span> <span class="p">{</span>
+  <span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;github.com/midl-dev/tezos-on-gke?ref=v2.0//terraform-no-cluster-create&quot;</span>
+  <span class="n">baking_nodes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">mynode</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="n">mybaker</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">public_baking_key</span><span class="o">=</span><span class="s2">&quot;edpk...&quot;</span>
+        <span class="n">public_baking_key_hash</span><span class="o">=</span><span class="s2">&quot;tz1YmsrYxQFJo5nGj4MEaXMPdLrcRf2a5mAU&quot;</span>
+        <span class="n">ledger_authorized_path</span><span class="o">=</span><span class="s2">&quot;ledger://my-four-key-words/ed25519/0h/1h&quot;</span><span class="p">,</span>
+        <span class="n">authorized_signers</span> <span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span> <span class="s2">&quot;ssh_pubkey&quot;</span> <span class="p">:</span> <span class="s2">&quot;ssh-rsa AAAAB&lt;snip&gt;==&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;signer_port&quot;</span> <span class="p">:</span> <span class="mi">8443</span><span class="p">,</span>
+                  <span class="s2">&quot;tunnel_endpoint_port&quot;</span> <span class="p">:</span> <span class="mi">51756</span> <span class="p">}</span> <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="n">signer_target_host_key</span><span class="o">=</span><span class="n">var</span><span class="o">.</span><span class="n">signer_target_host_key</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then <code class="docutils literal notranslate"><span class="pre">taint</span></code> and <code class="docutils literal notranslate"><span class="pre">apply</span></code> the terraform module.</p>
+</div>
+<div class="section" id="test-the-endpoint">
+<h3>Test the endpoint<a class="headerlink" href="#test-the-endpoint" title="Permalink to this headline">¶</a></h3>
+<p>Once terraform has deployed, you should be able to ssh from the signer to the endpoint.</p>
+<p>Test it by sshing to the signer as <code class="docutils literal notranslate"><span class="pre">tezos</span></code> user, then:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">p</span> <span class="mi">51756</span> <span class="n">signer</span><span class="o">@&lt;</span><span class="n">tunneling</span> <span class="n">endpoint</span> <span class="n">hostname</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The first time, you need to type <code class="docutils literal notranslate"><span class="pre">yes</span></code> to add this host to the known hosts.</p>
+<p>If you see the message <code class="docutils literal notranslate"><span class="pre">This</span> <span class="pre">account</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">available</span></code>, it means that the connection has been succesfully established.</p>
+<p>If you are using alerting, and if the Ledger is connected and the baking app is on, the <code class="docutils literal notranslate"><span class="pre">NoRemoteSigner</span></code> alert should clear at this point.</p>
+</div>
+<div class="section" id="remote-signer-monitoring">
+<h3>Remote signer monitoring<a class="headerlink" href="#remote-signer-monitoring" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="monitoring-alerting.html"><span class="doc">monitoring</span></a> section.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="setup_remote_signer.html" class="btn btn-neutral float-right" title="Setup remote signer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="setup_baker.html" class="btn btn-neutral float-left" title="Initial baker setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, MIDL.dev
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

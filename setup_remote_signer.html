@@ -1,0 +1,263 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Setup remote signer &mdash; MIDL.dev Tezos Suite  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="External monitoring" href="external-monitoring.html" />
+    <link rel="prev" title="Deploy a baker with remote signer" href="deploy-remote-signer.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MIDL.dev Tezos Suite
+          
+
+          
+            
+            <img src="_static/midl-dev-notext.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cloud-architecture.html">Cloud Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote-signer-architecture.html">Remote Signer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_baker.html">Initial baker setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-remote-signer.html">Configure remote signer</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Remote signer setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#assembly">Assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visual-checks">Visual checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#connect-ledger">Connect Ledger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-alerts">Test alerts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="external-monitoring.html">External monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trd-payouts.html">TRD Payouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-public-node.html">Deploy public node only</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-readiness.html">Production readiness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-alerting.html">Monitoring and alerting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="day-2-operations.html">Day 2 operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="active-standby.html">Active standby baker (experimental)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MIDL.dev Tezos Suite</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Setup remote signer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/setup_remote_signer.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="setup-remote-signer">
+<h1>Setup remote signer<a class="headerlink" href="#setup-remote-signer" title="Permalink to this headline">¶</a></h1>
+<p>Bill of materials:</p>
+<ul class="simple">
+<li>one Raspberry Pi 4 with a Geekworm hat</li>
+<li>two batteries</li>
+<li>one LTE dongle</li>
+<li>one USB-to-micro-USB adapter</li>
+<li>one USB-to-USB-C cable</li>
+</ul>
+<p>Not included:</p>
+<ul class="simple">
+<li>USB power adapter of at least 3A (3,000 mA) supply</li>
+<li>Ethernet cable</li>
+</ul>
+<div class="section" id="assembly">
+<h2>Assembly<a class="headerlink" href="#assembly" title="Permalink to this headline">¶</a></h2>
+<p>Insert the batteries in the Pi Hat. Make sure to respect polarity.</p>
+<p>Plug the 4G dongle to a USB 2 port (these are black in color).</p>
+<p>Plug the USB-to-micro-USB adapter to a USB 3 port. These are blue in color. <strong>This is important!</strong> The Ledger will be connected to the adapter, and it must be connected to a USB 3 port.</p>
+<p>Plug the Ethernet cable to an Internet-connected device.</p>
+<p>Plug the USB-to-USB C cable to the USB hat. <strong>Important!</strong> Do not connect the USB-C port to the Raspberry Pi directly, otherwise the battery will not charge.</p>
+<p>On the other end, connect the USB cable to the power adapter.</p>
+</div>
+<div class="section" id="visual-checks">
+<h2>Visual checks<a class="headerlink" href="#visual-checks" title="Permalink to this headline">¶</a></h2>
+<p>Check that the battery status LEDs indicate that the device is either charging or fully charged. In steady state, the device should be indicating a full charge. If that is not the case, your adapter may not be powerful enough.</p>
+<p>Check that the LED on the 4G LTE dongle shows a solid blue for Huawei (blinking blue for ZTE). If that is not the case, please move your setup to an area of cell phone coverage.</p>
+</div>
+<div class="section" id="connect-ledger">
+<h2>Connect Ledger<a class="headerlink" href="#connect-ledger" title="Permalink to this headline">¶</a></h2>
+<p>Connect the Baking Ledger Nano S to the Micro-USB end of the adapter. Unlock it and launch the baking app.</p>
+</div>
+<div class="section" id="test-alerts">
+<h2>Test alerts<a class="headerlink" href="#test-alerts" title="Permalink to this headline">¶</a></h2>
+<p>Once the signer is connected to the cloud backend, you may test that the alerting system is working properly.</p>
+<ol class="simple">
+<li>Unplug remote signer power connection.</li>
+<li>Unplug remote signer wired network connection.</li>
+<li>Unplug Ledger from remote signer.</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="external-monitoring.html" class="btn btn-neutral float-right" title="External monitoring" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="deploy-remote-signer.html" class="btn btn-neutral float-left" title="Deploy a baker with remote signer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, MIDL.dev
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

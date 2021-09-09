@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cloud Architecture &mdash; MIDL.dev Tezos Suite  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Remote signer architecture" href="remote-signer-architecture.html" />
+    <link rel="prev" title="Welcome to MIDL.dev Tezos Suite’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MIDL.dev Tezos Suite
+          
+
+          
+            
+            <img src="_static/midl-dev-notext.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Cloud Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#managed-kubernetes">Managed Kubernetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#secure-cloud-setup">Secure cloud setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fast-bringup-time">Fast bringup time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ledgers-for-key-storage">Ledgers for key storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#monitoring-and-alerting">Monitoring and alerting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="remote-signer-architecture.html">Remote Signer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_baker.html">Initial baker setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-remote-signer.html">Configure remote signer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup_remote_signer.html">Remote signer setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external-monitoring.html">External monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trd-payouts.html">TRD Payouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-public-node.html">Deploy public node only</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-readiness.html">Production readiness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-alerting.html">Monitoring and alerting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="day-2-operations.html">Day 2 operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="active-standby.html">Active standby baker (experimental)</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MIDL.dev Tezos Suite</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Cloud Architecture</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/cloud-architecture.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cloud-architecture">
+<h1>Cloud Architecture<a class="headerlink" href="#cloud-architecture" title="Permalink to this headline">¶</a></h1>
+<p>The best known baking tool, Kiln, is a complete solution for home baking, to be installed on physical hardware. MIDL.dev, in contrast, outsources most of the computing to the cloud, increasing reliability and decreasing the operating burden of the baking operations.</p>
+<div class="section" id="managed-kubernetes">
+<h2>Managed Kubernetes<a class="headerlink" href="#managed-kubernetes" title="Permalink to this headline">¶</a></h2>
+<p>Tezos Suite deploys the baking operations in a cloud-native way. It eliminates the maintenance burden on the base operating system and avoids configuration drift.</p>
+<p>It uses custom containers built on top of official Docker images from the Tezos project.</p>
+<p>Kubernetes lets you seamlessly scale your infrastructure. Tezos validation may become more computationally expensive over time, and the size of the blockchain may grow. It is simple to migrate to larger compute instances or bigger disk space without any downtime.</p>
+<p>Since the signing operations are of paramount importance, a separate setup takes care of the auxiliary operations such as payout and monitoring.</p>
+<p>Tezos mainnet is fully supported as well as Carthagenet and future test networks.</p>
+</div>
+<div class="section" id="secure-cloud-setup">
+<h2>Secure cloud setup<a class="headerlink" href="#secure-cloud-setup" title="Permalink to this headline">¶</a></h2>
+<p>Network security policies are applied in every pod to ensure all traffic is legitimate.</p>
+</div>
+<div class="section" id="fast-bringup-time">
+<h2>Fast bringup time<a class="headerlink" href="#fast-bringup-time" title="Permalink to this headline">¶</a></h2>
+<p>The nodes are brought up from a snapshot for faster turnaround time and disaster recovery.</p>
+</div>
+<div class="section" id="ledgers-for-key-storage">
+<h2>Ledgers for key storage<a class="headerlink" href="#ledgers-for-key-storage" title="Permalink to this headline">¶</a></h2>
+<p>Signing operations on a hardware wallet is best kept in hardware under the baker’s control. We provide a hardened remote signer OS that allows you to securely connect to the cloud setup and sign baking and endorsing operations.</p>
+<p>The remote signer is battery backed and has a redundant 4G internet connection to ensure uninterrupted validation operations.</p>
+</div>
+<div class="section" id="monitoring-and-alerting">
+<h2>Monitoring and alerting<a class="headerlink" href="#monitoring-and-alerting" title="Permalink to this headline">¶</a></h2>
+<p>The baking setup comes preconfigured with a complete monitoring solution based on Prometheus and Alertmanager.</p>
+<p>It will send you a Slack alert based on a variety of scenarios such as:</p>
+<ul class="simple">
+<li>remote signer unreachable</li>
+<li>remote signer has lost power</li>
+<li>remote signer has lost primary Internet connection</li>
+<li>private node lost connectivity to the public nodes</li>
+<li>the persistent volume storing the blockchain is getting full</li>
+</ul>
+<p>In addition, an external monitoring setup watches the backing operations from the blockchain, and alerts in case of missed blocks and endorsements.</p>
+<p>The monitoring setup is fully extensible and configurable. For example, it is possible to add a PagerDuty account for paging.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="remote-signer-architecture.html" class="btn btn-neutral float-right" title="Remote signer architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to MIDL.dev Tezos Suite’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, MIDL.dev
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
