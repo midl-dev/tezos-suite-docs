@@ -96,7 +96,7 @@ On the Ledger used for baking, launch the baking app and connect it to your comp
 Then issue the following:
 
 ```
-sudo tezos-signer setup ledger to bake for ledger_root --main-chain-id NetXdQprcVkpaWU
+sudo tezos-signer setup ledger to bake for <ledger_url> --main-chain-id NetXdQprcVkpaWU
 ```
 
 The Ledger should prompt you to confirm. It will display the baker address and the chain ID. Verify that it corresponds to your baker address.
